@@ -1,0 +1,14 @@
+.vscode
+project/smp/results
+**/__pycache__/**/*
+cropped_384
+project/smp/pipeline/*.sh
+project/smp/pipeline/*.out
+project/smp/experiments
+project/smp/results
+project/smp/models
+project/smp/logs
+count_metrics.py
+cropped_384.zip
+test
+./test.py
