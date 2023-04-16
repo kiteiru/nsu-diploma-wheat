@@ -1,6 +1,5 @@
-import json
 import os
-import sys
+import json
 import torch
 import argparse
 import logging
@@ -35,6 +34,8 @@ def check_crop_size(config, NAME, ARGV):
         if ARGV % 32 != 0:
             config[NAME] = (ARGV // 32) * 32
             logger.warning(f'Crop size {ARGV} is not divided by 32. It was changed to nearest divided: {config[NAME]}')
+        else:
+            config[NAME] = ARGV
     else:
         logger.error(f'Usage: {NAME} has to be a positive number.')
         exit_from_program()
@@ -58,13 +59,14 @@ def check_if_json_file_exists(config, NAME, PATH):
         exit_from_program()
 
 def set_data_organization_json(config, NAME, PATH, ORG):
-    if ORG == "other":
-        check_if_json_file_exists(config, NAME, PATH)
-    else:
+    if ORG != "other":
         PATH = os.path.join("../data_organization/", ORG + ".json")
-        with open(PATH, 'r') as f:
-            config[NAME] = json.load(f)
-        logger.info(f'{NAME}_PATH = "{PATH}"')
+
+    check_if_json_file_exists(config, NAME, PATH)
+
+    with open(PATH, 'r') as f:
+        config[NAME] = json.load(f)
+    logger.info(f'{NAME}_PATH = "{PATH}"')
 
 def check_if_argv_is_positive(config, NAME, ARGV):
     if ARGV > 0:
@@ -83,7 +85,8 @@ def set_device(config, NAME, ARGV):
 
 def check_if_encoder_is_available(config, NAME, ARGV):
     # TODO as class not just list
-    encoders = ['efficientnet-b0', 'efficientnet-b1', 'efficientnet-b2', 'efficientnet-b3', 'efficientnet-b4',
+    encoders = ['timm-efficientnet-b0', 'timm-efficientnet-b1', 'timm-efficientnet-b2', 'timm-efficientnet-b3', 'timm-efficientnet-b4',
+                'efficientnet-b0', 'efficientnet-b1', 'efficientnet-b2', 'efficientnet-b3', 'efficientnet-b4',
                 'resnet18', 'resnet34', 'resnet50', 'resnet101', 'resnet152',
                 'densenet121', 'densenet169', 'densenet201', 'densenet161',
                 'vgg11', 'vgg13', 'vgg16', 'vgg19',
@@ -102,7 +105,23 @@ def check_if_architecture_is_available(config, NAME, ARGV):
     archs = {"unet": smp.Unet(encoder_name=config["ENCODER"],
                               in_channels=config["INPUT_CHANNELS"],
                               classes=config["CLASSES"],
-                              activation=None)
+                              activation=None),
+             "unetpp": smp.UnetPlusPlus(encoder_name=config["ENCODER"],
+                                        in_channels=config["INPUT_CHANNELS"],
+                                        classes=config["CLASSES"],
+                                        activation=None),
+             "linknet": smp.Linknet(encoder_name=config["ENCODER"],
+                                    in_channels=config["INPUT_CHANNELS"],
+                                    classes=config["CLASSES"],
+                                    activation=None),
+             "fpn": smp.FPN(encoder_name=config["ENCODER"],
+                            in_channels=config["INPUT_CHANNELS"],
+                            classes=config["CLASSES"],
+                            activation=None),
+             "deeplabv3": smp.DeepLabV3(encoder_name=config["ENCODER"],
+                                        in_channels=config["INPUT_CHANNELS"],
+                                        classes=config["CLASSES"],
+                                        activation=None)
             }
     
     if ARGV in archs:
@@ -148,10 +167,24 @@ def check_if_loss_function_is_available(config, NAME, ARGV):
         logger.warning(f'Available loss functions: {list(loss_funcs.keys())}')
         exit_from_program()
 
+def check_normalised_distance(config, NAME, ARGV):
+    if ARGV > 0:
+        if ARGV <= 3:
+            config[NAME] = ARGV
+            logger.info(f'{NAME} = {ARGV}mm')
+        else:
+            logger.error(f'Usage: {NAME} has to be not more than 3mm.')
+            exit_from_program()
+    else:
+        logger.error(f'Usage: {NAME} has to be a positive number.')
+        exit_from_program()
 
-def check_args_and_init_config(args):
+def generate_name(config, NAME, args, timestamp):
+    config[NAME] = args.geometry + "_" + args.dataorg + "_" + args.architecture + "_" + args.encoder + "_" + args.lossfunc + "_" + str(args.radius) + "mm_" + timestamp
+
+
+def check_args_and_init_config(config, args, timestamp):
     # TODO config as class not just dictionary
-    config = {}
 
     check_input_data_dir(config, "INPUT_DATA_PATH", args.inputdata, args.geometry)
 
@@ -176,8 +209,12 @@ def check_args_and_init_config(args):
     check_if_optimizer_is_available(config, "OPTIMIZER", args.optimizer)
     check_if_loss_function_is_available(config, "LOSS_FUNCTION", args.lossfunc)
 
+    check_normalised_distance(config, "RADIUS", args.radius)
+
     check_if_dir_exists(config, "SAVE_MODEL_PATH", args.savemodel)
     check_if_dir_exists(config, "SAVE_OUTPUT_PATH", args.saveoutput)
+
+    generate_name(config, "EXPERIMENT_NAME", args, timestamp)
 
     return config
 
@@ -210,8 +247,10 @@ def parse_input_args():
     parser.add_argument("--optimizer", "-op", type=str, default="adam", help="optimizer name")
     parser.add_argument("--lossfunc", "-lf", type=str, default="bce_with_logits", help="loss function name")
 
-    parser.add_argument("--savemodel", "-sm", type=str, default="../tmp_models", help="directory path for saving model")
-    parser.add_argument("--saveoutput", "-so", type=str, default="../tmp_results", help="directory path for saving model outputs")
+    parser.add_argument("--radius", "-rad", type=int, default=3, help="normalise distance in mm")
+
+    parser.add_argument("--savemodel", "-sm", type=str, default="../results/models", help="directory path for saving model")
+    parser.add_argument("--saveoutput", "-so", type=str, default="../results/outputs", help="directory path for saving model outputs")
     
     args = parser.parse_args()
     
