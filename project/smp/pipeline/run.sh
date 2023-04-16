@@ -1,1 +1,1 @@
-CUDA_VISIBLE_DEVICES=0 python main.py equal circles
+CUDA_VISIBLE_DEVICES=1 python main.py
