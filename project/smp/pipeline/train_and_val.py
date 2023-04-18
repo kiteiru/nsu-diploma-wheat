@@ -1,4 +1,5 @@
 import os
+import copy
 import torch
 import logging
 import warnings
@@ -96,14 +97,20 @@ def validating(config, loader, model, device="cuda"):
                 recalls.append(recall)
                 f1s.append(fscore)
 
-    df_precisions.append(round(np.mean(precisions), ROUND_LIMIT))
-    df_recalls.append(round(np.mean(recalls), ROUND_LIMIT))
-    df_f1s.append(round(np.mean(f1s), ROUND_LIMIT))
+    mean_precision = round(np.mean(precisions), ROUND_LIMIT)
+    mean_recall = round(np.mean(recalls), ROUND_LIMIT)
+    mean_fscore = round(np.mean(f1s), ROUND_LIMIT)
+
+    df_precisions.append(mean_precision)
+    df_recalls.append(mean_recall)
+    df_f1s.append(mean_fscore)
 
     logger.info("Metrics on validation")
-    logger.info(f"Precision: {round(np.mean(precisions), ROUND_LIMIT)}")
-    logger.info(f"Recall: {round(np.mean(recalls), ROUND_LIMIT)}")
-    logger.info(f"F-score: {round(np.mean(f1s), ROUND_LIMIT)}")
+    logger.info(f"Precision: {mean_precision}")
+    logger.info(f"Recall: {mean_recall}")
+    logger.info(f"F-score: {mean_fscore}")
+
+    return mean_fscore
 
 @measure_time
 def train_and_val_model(config):
@@ -127,6 +134,10 @@ def train_and_val_model(config):
 
     scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer)
 
+    best_model = None
+    best_epoch = 0
+    best_fscore = 0
+
     logger.info("Training model started...")
     model_path = ""
     for epoch in range(config["EPOCHS"]):
@@ -134,12 +145,21 @@ def train_and_val_model(config):
 
         training(config, train_dataloader, model, optimizer, loss_fn, scheduler)
         
-        validating(config, val_dataloader, model, device=config["DEVICE"])
+        current_fscore = validating(config, val_dataloader, model, device=config["DEVICE"])
 
-        if (epoch + 1) % 1 == 0:
-            model_path = os.path.join(config["SAVE_MODEL_PATH"], config["EXPERIMENT_NAME"], f"epoch_{epoch + 1}.pt")
-            torch.save(model.state_dict(), model_path)
-            logger.info(f'Model was saved on {str(epoch + 1)} epoch, path is "{model_path}"')
+        if best_fscore < current_fscore:
+            best_fscore = current_fscore
+            best_epoch = epoch + 1
+            best_model = copy.deepcopy(model.state_dict())
+
+        # if (epoch + 1) % 10 == 0:
+        #     model_path = os.path.join(config["SAVE_MODEL_PATH"], config["EXPERIMENT_NAME"], f"epoch_{epoch + 1}.pt")
+        #     torch.save(model.state_dict(), model_path)
+        #     logger.info(f'Model was saved on {str(epoch + 1)} epoch, path is "{model_path}"')
+
+    model_path = os.path.join(config["SAVE_MODEL_PATH"], config["EXPERIMENT_NAME"], f"best_on_{str(best_epoch)}_epoch.pt")
+    torch.save(best_model, model_path)
+    logger.info(f'Best model was saved on {str(best_epoch)} epoch, path is "{model_path}"')
 
     config["MODEL_NAME"] = model_path
 
