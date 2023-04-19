@@ -1,5 +1,6 @@
 import os
 import copy
+import random
 import torch
 import logging
 import warnings
@@ -13,7 +14,7 @@ from pathlib import Path
 from skimage import io
 from skimage.transform import resize
 
-
+from utils.log_metrics import log_metrics
 from utils.measure_time import measure_time
 from utils.normalise_distance import detection_score
 from preprocessing.create_dataloaders import create_dataloaders
@@ -106,11 +107,9 @@ def validating(config, loader, model, device="cuda"):
     df_f1s.append(mean_fscore)
 
     logger.info("Metrics on validation")
-    logger.info(f"Precision: {mean_precision}")
-    logger.info(f"Recall: {mean_recall}")
-    logger.info(f"F-score: {mean_fscore}")
+    log_metrics(mean_precision, mean_recall, mean_fscore)
 
-    return mean_fscore
+    return mean_precision, mean_recall, mean_fscore
 
 @measure_time
 def train_and_val_model(config):
@@ -136,7 +135,8 @@ def train_and_val_model(config):
 
     best_model = None
     best_epoch = 0
-    best_fscore = 0
+    best_metrics = (0, 0, 0)
+    current_metrics = (0, 0, 0)
 
     logger.info("Training model started...")
     model_path = ""
@@ -145,10 +145,10 @@ def train_and_val_model(config):
 
         training(config, train_dataloader, model, optimizer, loss_fn, scheduler)
         
-        current_fscore = validating(config, val_dataloader, model, device=config["DEVICE"])
+        current_metrics = validating(config, val_dataloader, model, device=config["DEVICE"])
 
-        if best_fscore < current_fscore:
-            best_fscore = current_fscore
+        if best_metrics[2] < current_metrics[2]:
+            best_metrics = current_metrics
             best_epoch = epoch + 1
             best_model = copy.deepcopy(model.state_dict())
 
@@ -160,6 +160,7 @@ def train_and_val_model(config):
     model_path = os.path.join(config["SAVE_MODEL_PATH"], config["EXPERIMENT_NAME"], f"best_on_{str(best_epoch)}_epoch.pt")
     torch.save(best_model, model_path)
     logger.info(f'Best model was saved on {str(best_epoch)} epoch, path is "{model_path}"')
+    log_metrics(*best_metrics)
 
     config["MODEL_NAME"] = model_path
 

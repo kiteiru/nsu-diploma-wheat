@@ -10,6 +10,7 @@ import segmentation_models_pytorch as smp
 from skimage import io
 from pathlib import Path
 from skimage.transform import resize
+from utils.log_metrics import log_metrics
 
 
 from utils.measure_time import measure_time
@@ -83,7 +84,9 @@ def testing(config):
                 recalls.append(recall)
                 f1s.append(fscore)
 
+        mean_precision = round(np.mean(precisions), ROUND_LIMIT)
+        mean_recall = round(np.mean(recalls), ROUND_LIMIT)
+        mean_fscore = round(np.mean(f1s), ROUND_LIMIT)
+
         logger.info("Metrics on test")
-        logger.info(f"Precision: {round(np.mean(precisions), ROUND_LIMIT)}")
-        logger.info(f"Recall: {round(np.mean(recalls), ROUND_LIMIT)}")
-        logger.info(f"F-score: {round(np.mean(f1s), ROUND_LIMIT)}")
+        log_metrics(mean_precision, mean_recall, mean_fscore)
