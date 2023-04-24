@@ -1,0 +1,634 @@
+22:07:24 __main__ INFO Program has started running...
+22:07:24 utils.get_args INFO INPUT_DATA_PATH = "../../../cropped_384"
+22:07:24 utils.get_args INFO IMAGES_PATH = "../../../cropped_384/images"
+22:07:24 utils.get_args INFO MASKS_PATH = "../../../cropped_384/circles"
+22:07:24 utils.get_args INFO DATA_ORG_PATH = "../data_organization/equal.json"
+22:07:24 utils.get_args INFO DATA_ORG_PATH = "../data_organization/equal.json"
+22:07:24 utils.get_args INFO COEFS_PATH = "../scale_jsons/coefs.json"
+22:07:24 utils.get_args INFO RATIOS_PATH = "../scale_jsons/ratios.json"
+22:07:24 utils.get_args INFO EPOCHS = 100
+22:07:24 utils.get_args INFO BATCH_SIZE = 8
+22:07:24 utils.get_args INFO LEARNING_RATE = 0.001
+22:07:24 utils.get_args INFO INPUT_CHANNELS = 3
+22:07:24 utils.get_args INFO CLASSES = 1
+22:07:24 utils.get_args INFO DEVICE: gpu
+22:07:24 utils.get_args INFO ENCODER: efficientnet-b4
+22:07:26 utils.get_args INFO ARCHITECTURE: Unet
+22:07:26 utils.get_args INFO OPTIMIZER: Adam
+22:07:26 utils.get_args INFO LOSS_FUNCTION: BCEWithLogitsLoss
+22:07:26 utils.get_args INFO RADIUS = 2mm
+22:07:26 utils.get_args INFO SAVE_MODEL_PATH = "../results/models"
+22:07:26 utils.get_args INFO SAVE_OUTPUT_PATH = "../results/outputs"
+22:07:26 train_and_val INFO Training model started...
+22:07:26 train_and_val INFO Current epoch num: 1
+22:09:02 train_and_val INFO Loss changed from 0.78213 to 0.037962
+22:09:14 train_and_val INFO Metrics on validation
+22:09:14 utils.log_metrics INFO Precision: nan
+22:09:14 utils.log_metrics INFO Recall: nan
+22:09:14 utils.log_metrics INFO F-score: nan
+22:09:14 train_and_val INFO Current epoch num: 2
+22:10:50 train_and_val INFO Loss changed from 0.032844 to 0.029619
+22:11:03 train_and_val INFO Metrics on validation
+22:11:03 utils.log_metrics INFO Precision: 0.928692
+22:11:03 utils.log_metrics INFO Recall: 0.421621
+22:11:03 utils.log_metrics INFO F-score: 0.54196
+22:11:03 train_and_val INFO Current epoch num: 3
+22:12:39 train_and_val INFO Loss changed from 0.020625 to 0.022412
+22:12:51 train_and_val INFO Metrics on validation
+22:12:51 utils.log_metrics INFO Precision: 0.964254
+22:12:51 utils.log_metrics INFO Recall: 0.70817
+22:12:51 utils.log_metrics INFO F-score: 0.789952
+22:12:51 train_and_val INFO Current epoch num: 4
+22:14:27 train_and_val INFO Loss changed from 0.019167 to 0.01965
+22:14:40 train_and_val INFO Metrics on validation
+22:14:40 utils.log_metrics INFO Precision: 0.962364
+22:14:40 utils.log_metrics INFO Recall: 0.847056
+22:14:40 utils.log_metrics INFO F-score: 0.894574
+22:14:40 train_and_val INFO Current epoch num: 5
+22:16:15 train_and_val INFO Loss changed from 0.015432 to 0.017791
+22:16:28 train_and_val INFO Metrics on validation
+22:16:28 utils.log_metrics INFO Precision: 0.955724
+22:16:28 utils.log_metrics INFO Recall: 0.878786
+22:16:28 utils.log_metrics INFO F-score: 0.911074
+22:16:28 train_and_val INFO Current epoch num: 6
+22:18:03 train_and_val INFO Loss changed from 0.014356 to 0.018228
+22:18:16 train_and_val INFO Metrics on validation
+22:18:16 utils.log_metrics INFO Precision: 0.961017
+22:18:16 utils.log_metrics INFO Recall: 0.904136
+22:18:16 utils.log_metrics INFO F-score: 0.928618
+22:18:16 train_and_val INFO Current epoch num: 7
+22:19:52 train_and_val INFO Loss changed from 0.013637 to 0.01856
+22:20:04 train_and_val INFO Metrics on validation
+22:20:04 utils.log_metrics INFO Precision: 0.957283
+22:20:04 utils.log_metrics INFO Recall: 0.889979
+22:20:04 utils.log_metrics INFO F-score: 0.918728
+22:20:04 train_and_val INFO Current epoch num: 8
+22:21:40 train_and_val INFO Loss changed from 0.013705 to 0.01705
+22:21:53 train_and_val INFO Metrics on validation
+22:21:53 utils.log_metrics INFO Precision: 0.964246
+22:21:53 utils.log_metrics INFO Recall: 0.917725
+22:21:53 utils.log_metrics INFO F-score: 0.937486
+22:21:53 train_and_val INFO Current epoch num: 9
+22:23:29 train_and_val INFO Loss changed from 0.012997 to 0.016121
+22:23:41 train_and_val INFO Metrics on validation
+22:23:41 utils.log_metrics INFO Precision: 0.961432
+22:23:41 utils.log_metrics INFO Recall: 0.925419
+22:23:41 utils.log_metrics INFO F-score: 0.940353
+22:23:41 train_and_val INFO Current epoch num: 10
+22:25:17 train_and_val INFO Loss changed from 0.011729 to 0.014399
+22:25:30 train_and_val INFO Metrics on validation
+22:25:30 utils.log_metrics INFO Precision: 0.956153
+22:25:30 utils.log_metrics INFO Recall: 0.924684
+22:25:30 utils.log_metrics INFO F-score: 0.937773
+22:25:30 train_and_val INFO Current epoch num: 11
+22:27:06 train_and_val INFO Loss changed from 0.012357 to 0.018902
+22:27:18 train_and_val INFO Metrics on validation
+22:27:18 utils.log_metrics INFO Precision: 0.952348
+22:27:18 utils.log_metrics INFO Recall: 0.947987
+22:27:18 utils.log_metrics INFO F-score: 0.948379
+22:27:18 train_and_val INFO Current epoch num: 12
+22:28:54 train_and_val INFO Loss changed from 0.012893 to 0.01511
+22:29:07 train_and_val INFO Metrics on validation
+22:29:07 utils.log_metrics INFO Precision: 0.964688
+22:29:07 utils.log_metrics INFO Recall: 0.922758
+22:29:07 utils.log_metrics INFO F-score: 0.940831
+22:29:07 train_and_val INFO Current epoch num: 13
+22:30:42 train_and_val INFO Loss changed from 0.012864 to 0.013551
+22:30:55 train_and_val INFO Metrics on validation
+22:30:55 utils.log_metrics INFO Precision: 0.957115
+22:30:55 utils.log_metrics INFO Recall: 0.949302
+22:30:55 utils.log_metrics INFO F-score: 0.951461
+22:30:55 train_and_val INFO Current epoch num: 14
+22:32:31 train_and_val INFO Loss changed from 0.011587 to 0.013754
+22:32:43 train_and_val INFO Metrics on validation
+22:32:43 utils.log_metrics INFO Precision: 0.958431
+22:32:43 utils.log_metrics INFO Recall: 0.941116
+22:32:43 utils.log_metrics INFO F-score: 0.947668
+22:32:43 train_and_val INFO Current epoch num: 15
+22:34:19 train_and_val INFO Loss changed from 0.011815 to 0.014998
+22:34:32 train_and_val INFO Metrics on validation
+22:34:32 utils.log_metrics INFO Precision: 0.949544
+22:34:32 utils.log_metrics INFO Recall: 0.93787
+22:34:32 utils.log_metrics INFO F-score: 0.941533
+22:34:32 train_and_val INFO Current epoch num: 16
+22:36:07 train_and_val INFO Loss changed from 0.011453 to 0.014329
+22:36:20 train_and_val INFO Metrics on validation
+22:36:20 utils.log_metrics INFO Precision: 0.948944
+22:36:20 utils.log_metrics INFO Recall: 0.939637
+22:36:20 utils.log_metrics INFO F-score: 0.942019
+22:36:20 train_and_val INFO Current epoch num: 17
+22:37:56 train_and_val INFO Loss changed from 0.011227 to 0.01325
+22:38:08 train_and_val INFO Metrics on validation
+22:38:08 utils.log_metrics INFO Precision: 0.966126
+22:38:08 utils.log_metrics INFO Recall: 0.939843
+22:38:08 utils.log_metrics INFO F-score: 0.951139
+22:38:08 train_and_val INFO Current epoch num: 18
+22:39:44 train_and_val INFO Loss changed from 0.010699 to 0.01261
+22:39:57 train_and_val INFO Metrics on validation
+22:39:57 utils.log_metrics INFO Precision: 0.966358
+22:39:57 utils.log_metrics INFO Recall: 0.948524
+22:39:57 utils.log_metrics INFO F-score: 0.956139
+22:39:57 train_and_val INFO Current epoch num: 19
+22:41:33 train_and_val INFO Loss changed from 0.01073 to 0.012597
+22:41:45 train_and_val INFO Metrics on validation
+22:41:45 utils.log_metrics INFO Precision: 0.967724
+22:41:45 utils.log_metrics INFO Recall: 0.941772
+22:41:45 utils.log_metrics INFO F-score: 0.95263
+22:41:45 train_and_val INFO Current epoch num: 20
+22:43:21 train_and_val INFO Loss changed from 0.011866 to 0.013246
+22:43:33 train_and_val INFO Metrics on validation
+22:43:33 utils.log_metrics INFO Precision: 0.966903
+22:43:33 utils.log_metrics INFO Recall: 0.949026
+22:43:33 utils.log_metrics INFO F-score: 0.956367
+22:43:33 train_and_val INFO Current epoch num: 21
+22:45:09 train_and_val INFO Loss changed from 0.010308 to 0.014694
+22:45:22 train_and_val INFO Metrics on validation
+22:45:22 utils.log_metrics INFO Precision: 0.970122
+22:45:22 utils.log_metrics INFO Recall: 0.954469
+22:45:22 utils.log_metrics INFO F-score: 0.960899
+22:45:22 train_and_val INFO Current epoch num: 22
+22:46:57 train_and_val INFO Loss changed from 0.009941 to 0.01362
+22:47:10 train_and_val INFO Metrics on validation
+22:47:10 utils.log_metrics INFO Precision: 0.968887
+22:47:10 utils.log_metrics INFO Recall: 0.949563
+22:47:10 utils.log_metrics INFO F-score: 0.957561
+22:47:10 train_and_val INFO Current epoch num: 23
+22:48:46 train_and_val INFO Loss changed from 0.010699 to 0.011589
+22:48:59 train_and_val INFO Metrics on validation
+22:48:59 utils.log_metrics INFO Precision: 0.967696
+22:48:59 utils.log_metrics INFO Recall: 0.944945
+22:48:59 utils.log_metrics INFO F-score: 0.954859
+22:48:59 train_and_val INFO Current epoch num: 24
+22:50:34 train_and_val INFO Loss changed from 0.010295 to 0.012321
+22:50:47 train_and_val INFO Metrics on validation
+22:50:47 utils.log_metrics INFO Precision: 0.963448
+22:50:47 utils.log_metrics INFO Recall: 0.952015
+22:50:47 utils.log_metrics INFO F-score: 0.956361
+22:50:47 train_and_val INFO Current epoch num: 25
+22:52:23 train_and_val INFO Loss changed from 0.010213 to 0.012342
+22:52:35 train_and_val INFO Metrics on validation
+22:52:35 utils.log_metrics INFO Precision: 0.965836
+22:52:35 utils.log_metrics INFO Recall: 0.958701
+22:52:35 utils.log_metrics INFO F-score: 0.961199
+22:52:35 train_and_val INFO Current epoch num: 26
+22:54:12 train_and_val INFO Loss changed from 0.009414 to 0.011418
+22:54:24 train_and_val INFO Metrics on validation
+22:54:24 utils.log_metrics INFO Precision: 0.963115
+22:54:24 utils.log_metrics INFO Recall: 0.955457
+22:54:24 utils.log_metrics INFO F-score: 0.958078
+22:54:24 train_and_val INFO Current epoch num: 27
+22:56:00 train_and_val INFO Loss changed from 0.009971 to 0.012589
+22:56:13 train_and_val INFO Metrics on validation
+22:56:13 utils.log_metrics INFO Precision: 0.972221
+22:56:13 utils.log_metrics INFO Recall: 0.947134
+22:56:13 utils.log_metrics INFO F-score: 0.957714
+22:56:13 train_and_val INFO Current epoch num: 28
+22:57:49 train_and_val INFO Loss changed from 0.008919 to 0.011769
+22:58:01 train_and_val INFO Metrics on validation
+22:58:01 utils.log_metrics INFO Precision: 0.968492
+22:58:01 utils.log_metrics INFO Recall: 0.953334
+22:58:01 utils.log_metrics INFO F-score: 0.959757
+22:58:01 train_and_val INFO Current epoch num: 29
+22:59:37 train_and_val INFO Loss changed from 0.009149 to 0.014258
+22:59:50 train_and_val INFO Metrics on validation
+22:59:50 utils.log_metrics INFO Precision: 0.964213
+22:59:50 utils.log_metrics INFO Recall: 0.948578
+22:59:50 utils.log_metrics INFO F-score: 0.955047
+22:59:50 train_and_val INFO Current epoch num: 30
+23:01:26 train_and_val INFO Loss changed from 0.008875 to 0.01074
+23:01:38 train_and_val INFO Metrics on validation
+23:01:38 utils.log_metrics INFO Precision: 0.970459
+23:01:38 utils.log_metrics INFO Recall: 0.960143
+23:01:38 utils.log_metrics INFO F-score: 0.964355
+23:01:38 train_and_val INFO Current epoch num: 31
+23:03:14 train_and_val INFO Loss changed from 0.009442 to 0.010526
+23:03:27 train_and_val INFO Metrics on validation
+23:03:27 utils.log_metrics INFO Precision: 0.949307
+23:03:27 utils.log_metrics INFO Recall: 0.956956
+23:03:27 utils.log_metrics INFO F-score: 0.951399
+23:03:27 train_and_val INFO Current epoch num: 32
+23:05:03 train_and_val INFO Loss changed from 0.009872 to 0.011107
+23:05:16 train_and_val INFO Metrics on validation
+23:05:16 utils.log_metrics INFO Precision: 0.962698
+23:05:16 utils.log_metrics INFO Recall: 0.956601
+23:05:16 utils.log_metrics INFO F-score: 0.958375
+23:05:16 train_and_val INFO Current epoch num: 33
+23:06:52 train_and_val INFO Loss changed from 0.009771 to 0.011548
+23:07:04 train_and_val INFO Metrics on validation
+23:07:04 utils.log_metrics INFO Precision: 0.959546
+23:07:04 utils.log_metrics INFO Recall: 0.959049
+23:07:04 utils.log_metrics INFO F-score: 0.958137
+23:07:04 train_and_val INFO Current epoch num: 34
+23:08:41 train_and_val INFO Loss changed from 0.00855 to 0.009047
+23:08:54 train_and_val INFO Metrics on validation
+23:08:54 utils.log_metrics INFO Precision: 0.96128
+23:08:54 utils.log_metrics INFO Recall: 0.948032
+23:08:54 utils.log_metrics INFO F-score: 0.952892
+23:08:54 train_and_val INFO Current epoch num: 35
+23:10:29 train_and_val INFO Loss changed from 0.009435 to 0.008863
+23:10:42 train_and_val INFO Metrics on validation
+23:10:42 utils.log_metrics INFO Precision: 0.965068
+23:10:42 utils.log_metrics INFO Recall: 0.944149
+23:10:42 utils.log_metrics INFO F-score: 0.95276
+23:10:42 train_and_val INFO Current epoch num: 36
+23:12:18 train_and_val INFO Loss changed from 0.008154 to 0.009546
+23:12:30 train_and_val INFO Metrics on validation
+23:12:30 utils.log_metrics INFO Precision: 0.965633
+23:12:30 utils.log_metrics INFO Recall: 0.958718
+23:12:30 utils.log_metrics INFO F-score: 0.961276
+23:12:30 train_and_val INFO Current epoch num: 37
+23:14:06 train_and_val INFO Loss changed from 0.008469 to 0.010102
+23:14:19 train_and_val INFO Metrics on validation
+23:14:19 utils.log_metrics INFO Precision: 0.961761
+23:14:19 utils.log_metrics INFO Recall: 0.956896
+23:14:19 utils.log_metrics INFO F-score: 0.958261
+23:14:19 train_and_val INFO Current epoch num: 38
+23:15:54 train_and_val INFO Loss changed from 0.008692 to 0.010118
+23:16:07 train_and_val INFO Metrics on validation
+23:16:07 utils.log_metrics INFO Precision: 0.959832
+23:16:07 utils.log_metrics INFO Recall: 0.954639
+23:16:07 utils.log_metrics INFO F-score: 0.955934
+23:16:07 train_and_val INFO Current epoch num: 39
+23:17:43 train_and_val INFO Loss changed from 0.008918 to 0.00998
+23:17:55 train_and_val INFO Metrics on validation
+23:17:55 utils.log_metrics INFO Precision: 0.966706
+23:17:55 utils.log_metrics INFO Recall: 0.954979
+23:17:55 utils.log_metrics INFO F-score: 0.959657
+23:17:55 train_and_val INFO Current epoch num: 40
+23:19:31 train_and_val INFO Loss changed from 0.008344 to 0.011437
+23:19:44 train_and_val INFO Metrics on validation
+23:19:44 utils.log_metrics INFO Precision: 0.963065
+23:19:44 utils.log_metrics INFO Recall: 0.953317
+23:19:44 utils.log_metrics INFO F-score: 0.956845
+23:19:44 train_and_val INFO Current epoch num: 41
+23:21:20 train_and_val INFO Loss changed from 0.009581 to 0.009564
+23:21:33 train_and_val INFO Metrics on validation
+23:21:33 utils.log_metrics INFO Precision: 0.96995
+23:21:33 utils.log_metrics INFO Recall: 0.962871
+23:21:33 utils.log_metrics INFO F-score: 0.965414
+23:21:33 train_and_val INFO Current epoch num: 42
+23:23:09 train_and_val INFO Loss changed from 0.008531 to 0.009294
+23:23:21 train_and_val INFO Metrics on validation
+23:23:21 utils.log_metrics INFO Precision: 0.970496
+23:23:21 utils.log_metrics INFO Recall: 0.963352
+23:23:21 utils.log_metrics INFO F-score: 0.965756
+23:23:21 train_and_val INFO Current epoch num: 43
+23:24:57 train_and_val INFO Loss changed from 0.009162 to 0.009972
+23:25:10 train_and_val INFO Metrics on validation
+23:25:10 utils.log_metrics INFO Precision: 0.95718
+23:25:10 utils.log_metrics INFO Recall: 0.95865
+23:25:10 utils.log_metrics INFO F-score: 0.956935
+23:25:10 train_and_val INFO Current epoch num: 44
+23:26:46 train_and_val INFO Loss changed from 0.008181 to 0.009755
+23:26:58 train_and_val INFO Metrics on validation
+23:26:58 utils.log_metrics INFO Precision: 0.964585
+23:26:58 utils.log_metrics INFO Recall: 0.958015
+23:26:58 utils.log_metrics INFO F-score: 0.960136
+23:26:58 train_and_val INFO Current epoch num: 45
+23:28:34 train_and_val INFO Loss changed from 0.008058 to 0.010282
+23:28:47 train_and_val INFO Metrics on validation
+23:28:47 utils.log_metrics INFO Precision: 0.964554
+23:28:47 utils.log_metrics INFO Recall: 0.957739
+23:28:47 utils.log_metrics INFO F-score: 0.96002
+23:28:47 train_and_val INFO Current epoch num: 46
+23:30:23 train_and_val INFO Loss changed from 0.00829 to 0.008334
+23:30:35 train_and_val INFO Metrics on validation
+23:30:35 utils.log_metrics INFO Precision: 0.952773
+23:30:35 utils.log_metrics INFO Recall: 0.953786
+23:30:35 utils.log_metrics INFO F-score: 0.95168
+23:30:35 train_and_val INFO Current epoch num: 47
+23:32:11 train_and_val INFO Loss changed from 0.007751 to 0.009401
+23:32:24 train_and_val INFO Metrics on validation
+23:32:24 utils.log_metrics INFO Precision: 0.96659
+23:32:24 utils.log_metrics INFO Recall: 0.960517
+23:32:24 utils.log_metrics INFO F-score: 0.96251
+23:32:24 train_and_val INFO Current epoch num: 48
+23:34:00 train_and_val INFO Loss changed from 0.008095 to 0.011784
+23:34:12 train_and_val INFO Metrics on validation
+23:34:12 utils.log_metrics INFO Precision: 0.959601
+23:34:12 utils.log_metrics INFO Recall: 0.956247
+23:34:12 utils.log_metrics INFO F-score: 0.95658
+23:34:12 train_and_val INFO Current epoch num: 49
+23:35:48 train_and_val INFO Loss changed from 0.008138 to 0.009838
+23:36:01 train_and_val INFO Metrics on validation
+23:36:01 utils.log_metrics INFO Precision: 0.967573
+23:36:01 utils.log_metrics INFO Recall: 0.957055
+23:36:01 utils.log_metrics INFO F-score: 0.961239
+23:36:01 train_and_val INFO Current epoch num: 50
+23:37:37 train_and_val INFO Loss changed from 0.00839 to 0.009827
+23:37:49 train_and_val INFO Metrics on validation
+23:37:49 utils.log_metrics INFO Precision: 0.957711
+23:37:49 utils.log_metrics INFO Recall: 0.957617
+23:37:49 utils.log_metrics INFO F-score: 0.95624
+23:37:49 train_and_val INFO Current epoch num: 51
+23:39:25 train_and_val INFO Loss changed from 0.007373 to 0.009629
+23:39:38 train_and_val INFO Metrics on validation
+23:39:38 utils.log_metrics INFO Precision: 0.962021
+23:39:38 utils.log_metrics INFO Recall: 0.959714
+23:39:38 utils.log_metrics INFO F-score: 0.959844
+23:39:38 train_and_val INFO Current epoch num: 52
+23:41:14 train_and_val INFO Loss changed from 0.008188 to 0.008293
+23:41:26 train_and_val INFO Metrics on validation
+23:41:26 utils.log_metrics INFO Precision: 0.963921
+23:41:26 utils.log_metrics INFO Recall: 0.964186
+23:41:26 utils.log_metrics INFO F-score: 0.962884
+23:41:26 train_and_val INFO Current epoch num: 53
+23:43:02 train_and_val INFO Loss changed from 0.006858 to 0.008563
+23:43:15 train_and_val INFO Metrics on validation
+23:43:15 utils.log_metrics INFO Precision: 0.964374
+23:43:15 utils.log_metrics INFO Recall: 0.955573
+23:43:15 utils.log_metrics INFO F-score: 0.959081
+23:43:15 train_and_val INFO Current epoch num: 54
+23:44:51 train_and_val INFO Loss changed from 0.008336 to 0.008449
+23:45:04 train_and_val INFO Metrics on validation
+23:45:04 utils.log_metrics INFO Precision: 0.963959
+23:45:04 utils.log_metrics INFO Recall: 0.957964
+23:45:04 utils.log_metrics INFO F-score: 0.959593
+23:45:04 train_and_val INFO Current epoch num: 55
+23:46:40 train_and_val INFO Loss changed from 0.008292 to 0.009204
+23:46:52 train_and_val INFO Metrics on validation
+23:46:52 utils.log_metrics INFO Precision: 0.959433
+23:46:52 utils.log_metrics INFO Recall: 0.957696
+23:46:52 utils.log_metrics INFO F-score: 0.957647
+23:46:52 train_and_val INFO Current epoch num: 56
+23:48:28 train_and_val INFO Loss changed from 0.007758 to 0.012075
+23:48:40 train_and_val INFO Metrics on validation
+23:48:40 utils.log_metrics INFO Precision: 0.953175
+23:48:40 utils.log_metrics INFO Recall: 0.960249
+23:48:40 utils.log_metrics INFO F-score: 0.955588
+23:48:40 train_and_val INFO Current epoch num: 57
+23:50:16 train_and_val INFO Loss changed from 0.00717 to 0.008476
+23:50:29 train_and_val INFO Metrics on validation
+23:50:29 utils.log_metrics INFO Precision: 0.959272
+23:50:29 utils.log_metrics INFO Recall: 0.961741
+23:50:29 utils.log_metrics INFO F-score: 0.958665
+23:50:29 train_and_val INFO Current epoch num: 58
+23:52:05 train_and_val INFO Loss changed from 0.007231 to 0.008775
+23:52:17 train_and_val INFO Metrics on validation
+23:52:17 utils.log_metrics INFO Precision: 0.965447
+23:52:17 utils.log_metrics INFO Recall: 0.957755
+23:52:17 utils.log_metrics INFO F-score: 0.960351
+23:52:17 train_and_val INFO Current epoch num: 59
+23:53:53 train_and_val INFO Loss changed from 0.007478 to 0.010714
+23:54:05 train_and_val INFO Metrics on validation
+23:54:05 utils.log_metrics INFO Precision: 0.959275
+23:54:05 utils.log_metrics INFO Recall: 0.962577
+23:54:05 utils.log_metrics INFO F-score: 0.959893
+23:54:05 train_and_val INFO Current epoch num: 60
+23:55:41 train_and_val INFO Loss changed from 0.007239 to 0.011357
+23:55:54 train_and_val INFO Metrics on validation
+23:55:54 utils.log_metrics INFO Precision: 0.961872
+23:55:54 utils.log_metrics INFO Recall: 0.958943
+23:55:54 utils.log_metrics INFO F-score: 0.95937
+23:55:54 train_and_val INFO Current epoch num: 61
+23:57:30 train_and_val INFO Loss changed from 0.007285 to 0.009955
+23:57:42 train_and_val INFO Metrics on validation
+23:57:42 utils.log_metrics INFO Precision: 0.95688
+23:57:42 utils.log_metrics INFO Recall: 0.960949
+23:57:42 utils.log_metrics INFO F-score: 0.958092
+23:57:42 train_and_val INFO Current epoch num: 62
+23:59:18 train_and_val INFO Loss changed from 0.006853 to 0.009426
+23:59:30 train_and_val INFO Metrics on validation
+23:59:30 utils.log_metrics INFO Precision: 0.96035
+23:59:30 utils.log_metrics INFO Recall: 0.953773
+23:59:30 utils.log_metrics INFO F-score: 0.955425
+23:59:30 train_and_val INFO Current epoch num: 63
+00:01:06 train_and_val INFO Loss changed from 0.007615 to 0.009319
+00:01:19 train_and_val INFO Metrics on validation
+00:01:19 utils.log_metrics INFO Precision: 0.957375
+00:01:19 utils.log_metrics INFO Recall: 0.960164
+00:01:19 utils.log_metrics INFO F-score: 0.957733
+00:01:19 train_and_val INFO Current epoch num: 64
+00:02:55 train_and_val INFO Loss changed from 0.007903 to 0.009666
+00:03:07 train_and_val INFO Metrics on validation
+00:03:07 utils.log_metrics INFO Precision: 0.955866
+00:03:07 utils.log_metrics INFO Recall: 0.957609
+00:03:07 utils.log_metrics INFO F-score: 0.955487
+00:03:07 train_and_val INFO Current epoch num: 65
+00:04:43 train_and_val INFO Loss changed from 0.006513 to 0.010202
+00:04:56 train_and_val INFO Metrics on validation
+00:04:56 utils.log_metrics INFO Precision: 0.963589
+00:04:56 utils.log_metrics INFO Recall: 0.959764
+00:04:56 utils.log_metrics INFO F-score: 0.960678
+00:04:56 train_and_val INFO Current epoch num: 66
+00:06:32 train_and_val INFO Loss changed from 0.007394 to 0.009452
+00:06:44 train_and_val INFO Metrics on validation
+00:06:44 utils.log_metrics INFO Precision: 0.964551
+00:06:44 utils.log_metrics INFO Recall: 0.960419
+00:06:44 utils.log_metrics INFO F-score: 0.9616
+00:06:44 train_and_val INFO Current epoch num: 67
+00:08:20 train_and_val INFO Loss changed from 0.007028 to 0.00976
+00:08:33 train_and_val INFO Metrics on validation
+00:08:33 utils.log_metrics INFO Precision: 0.963852
+00:08:33 utils.log_metrics INFO Recall: 0.965746
+00:08:33 utils.log_metrics INFO F-score: 0.963731
+00:08:33 train_and_val INFO Current epoch num: 68
+00:10:09 train_and_val INFO Loss changed from 0.006771 to 0.006912
+00:10:21 train_and_val INFO Metrics on validation
+00:10:21 utils.log_metrics INFO Precision: 0.957989
+00:10:21 utils.log_metrics INFO Recall: 0.960621
+00:10:21 utils.log_metrics INFO F-score: 0.958133
+00:10:21 train_and_val INFO Current epoch num: 69
+00:11:57 train_and_val INFO Loss changed from 0.007578 to 0.007273
+00:12:10 train_and_val INFO Metrics on validation
+00:12:10 utils.log_metrics INFO Precision: 0.958609
+00:12:10 utils.log_metrics INFO Recall: 0.962491
+00:12:10 utils.log_metrics INFO F-score: 0.959775
+00:12:10 train_and_val INFO Current epoch num: 70
+00:13:45 train_and_val INFO Loss changed from 0.007143 to 0.007977
+00:13:58 train_and_val INFO Metrics on validation
+00:13:58 utils.log_metrics INFO Precision: 0.956316
+00:13:58 utils.log_metrics INFO Recall: 0.96254
+00:13:58 utils.log_metrics INFO F-score: 0.958343
+00:13:58 train_and_val INFO Current epoch num: 71
+00:15:34 train_and_val INFO Loss changed from 0.008123 to 0.007729
+00:15:46 train_and_val INFO Metrics on validation
+00:15:46 utils.log_metrics INFO Precision: 0.959376
+00:15:46 utils.log_metrics INFO Recall: 0.960559
+00:15:46 utils.log_metrics INFO F-score: 0.959145
+00:15:46 train_and_val INFO Current epoch num: 72
+00:17:22 train_and_val INFO Loss changed from 0.006477 to 0.008765
+00:17:34 train_and_val INFO Metrics on validation
+00:17:34 utils.log_metrics INFO Precision: 0.957471
+00:17:34 utils.log_metrics INFO Recall: 0.960517
+00:17:34 utils.log_metrics INFO F-score: 0.957949
+00:17:34 train_and_val INFO Current epoch num: 73
+00:19:10 train_and_val INFO Loss changed from 0.007167 to 0.008058
+00:19:23 train_and_val INFO Metrics on validation
+00:19:23 utils.log_metrics INFO Precision: 0.953932
+00:19:23 utils.log_metrics INFO Recall: 0.959158
+00:19:23 utils.log_metrics INFO F-score: 0.955187
+00:19:23 train_and_val INFO Current epoch num: 74
+00:20:59 train_and_val INFO Loss changed from 0.007221 to 0.007514
+00:21:12 train_and_val INFO Metrics on validation
+00:21:12 utils.log_metrics INFO Precision: 0.955472
+00:21:12 utils.log_metrics INFO Recall: 0.961207
+00:21:12 utils.log_metrics INFO F-score: 0.957258
+00:21:12 train_and_val INFO Current epoch num: 75
+00:22:48 train_and_val INFO Loss changed from 0.007123 to 0.008481
+00:23:00 train_and_val INFO Metrics on validation
+00:23:00 utils.log_metrics INFO Precision: 0.955768
+00:23:00 utils.log_metrics INFO Recall: 0.960792
+00:23:00 utils.log_metrics INFO F-score: 0.957212
+00:23:00 train_and_val INFO Current epoch num: 76
+00:24:36 train_and_val INFO Loss changed from 0.006589 to 0.007937
+00:24:49 train_and_val INFO Metrics on validation
+00:24:49 utils.log_metrics INFO Precision: 0.952478
+00:24:49 utils.log_metrics INFO Recall: 0.962028
+00:24:49 utils.log_metrics INFO F-score: 0.955953
+00:24:49 train_and_val INFO Current epoch num: 77
+00:26:25 train_and_val INFO Loss changed from 0.007441 to 0.006893
+00:26:37 train_and_val INFO Metrics on validation
+00:26:37 utils.log_metrics INFO Precision: 0.963929
+00:26:37 utils.log_metrics INFO Recall: 0.954018
+00:26:37 utils.log_metrics INFO F-score: 0.957822
+00:26:37 train_and_val INFO Current epoch num: 78
+00:28:13 train_and_val INFO Loss changed from 0.007189 to 0.007045
+00:28:26 train_and_val INFO Metrics on validation
+00:28:26 utils.log_metrics INFO Precision: 0.962396
+00:28:26 utils.log_metrics INFO Recall: 0.956891
+00:28:26 utils.log_metrics INFO F-score: 0.958536
+00:28:26 train_and_val INFO Current epoch num: 79
+00:30:01 train_and_val INFO Loss changed from 0.007044 to 0.007876
+00:30:14 train_and_val INFO Metrics on validation
+00:30:14 utils.log_metrics INFO Precision: 0.959716
+00:30:14 utils.log_metrics INFO Recall: 0.958849
+00:30:14 utils.log_metrics INFO F-score: 0.958051
+00:30:14 train_and_val INFO Current epoch num: 80
+00:31:50 train_and_val INFO Loss changed from 0.007059 to 0.007419
+00:32:02 train_and_val INFO Metrics on validation
+00:32:02 utils.log_metrics INFO Precision: 0.957553
+00:32:02 utils.log_metrics INFO Recall: 0.965852
+00:32:02 utils.log_metrics INFO F-score: 0.960466
+00:32:02 train_and_val INFO Current epoch num: 81
+00:33:38 train_and_val INFO Loss changed from 0.006813 to 0.006095
+00:33:51 train_and_val INFO Metrics on validation
+00:33:51 utils.log_metrics INFO Precision: 0.955498
+00:33:51 utils.log_metrics INFO Recall: 0.959606
+00:33:51 utils.log_metrics INFO F-score: 0.956165
+00:33:51 train_and_val INFO Current epoch num: 82
+00:35:27 train_and_val INFO Loss changed from 0.006146 to 0.00772
+00:35:40 train_and_val INFO Metrics on validation
+00:35:40 utils.log_metrics INFO Precision: 0.958203
+00:35:40 utils.log_metrics INFO Recall: 0.955523
+00:35:40 utils.log_metrics INFO F-score: 0.955619
+00:35:40 train_and_val INFO Current epoch num: 83
+00:37:16 train_and_val INFO Loss changed from 0.00672 to 0.006155
+00:37:29 train_and_val INFO Metrics on validation
+00:37:29 utils.log_metrics INFO Precision: 0.961055
+00:37:29 utils.log_metrics INFO Recall: 0.963634
+00:37:29 utils.log_metrics INFO F-score: 0.961352
+00:37:29 train_and_val INFO Current epoch num: 84
+00:39:05 train_and_val INFO Loss changed from 0.006211 to 0.0073
+00:39:17 train_and_val INFO Metrics on validation
+00:39:17 utils.log_metrics INFO Precision: 0.960937
+00:39:17 utils.log_metrics INFO Recall: 0.959579
+00:39:17 utils.log_metrics INFO F-score: 0.959222
+00:39:17 train_and_val INFO Current epoch num: 85
+00:40:54 train_and_val INFO Loss changed from 0.006102 to 0.006199
+00:41:06 train_and_val INFO Metrics on validation
+00:41:06 utils.log_metrics INFO Precision: 0.964458
+00:41:06 utils.log_metrics INFO Recall: 0.967601
+00:41:06 utils.log_metrics INFO F-score: 0.96498
+00:41:06 train_and_val INFO Current epoch num: 86
+00:42:42 train_and_val INFO Loss changed from 0.006432 to 0.006277
+00:42:55 train_and_val INFO Metrics on validation
+00:42:55 utils.log_metrics INFO Precision: 0.96126
+00:42:55 utils.log_metrics INFO Recall: 0.959529
+00:42:55 utils.log_metrics INFO F-score: 0.959601
+00:42:55 train_and_val INFO Current epoch num: 87
+00:44:31 train_and_val INFO Loss changed from 0.006517 to 0.007251
+00:44:43 train_and_val INFO Metrics on validation
+00:44:43 utils.log_metrics INFO Precision: 0.962266
+00:44:43 utils.log_metrics INFO Recall: 0.966569
+00:44:43 utils.log_metrics INFO F-score: 0.96348
+00:44:43 train_and_val INFO Current epoch num: 88
+00:46:19 train_and_val INFO Loss changed from 0.005553 to 0.006821
+00:46:32 train_and_val INFO Metrics on validation
+00:46:32 utils.log_metrics INFO Precision: 0.959461
+00:46:32 utils.log_metrics INFO Recall: 0.962644
+00:46:32 utils.log_metrics INFO F-score: 0.959701
+00:46:32 train_and_val INFO Current epoch num: 89
+00:48:07 train_and_val INFO Loss changed from 0.006517 to 0.007107
+00:48:20 train_and_val INFO Metrics on validation
+00:48:20 utils.log_metrics INFO Precision: 0.959938
+00:48:20 utils.log_metrics INFO Recall: 0.966024
+00:48:20 utils.log_metrics INFO F-score: 0.96187
+00:48:20 train_and_val INFO Current epoch num: 90
+00:49:56 train_and_val INFO Loss changed from 0.006576 to 0.006062
+00:50:09 train_and_val INFO Metrics on validation
+00:50:09 utils.log_metrics INFO Precision: 0.958196
+00:50:09 utils.log_metrics INFO Recall: 0.958421
+00:50:09 utils.log_metrics INFO F-score: 0.956969
+00:50:09 train_and_val INFO Current epoch num: 91
+00:51:45 train_and_val INFO Loss changed from 0.006084 to 0.00715
+00:51:58 train_and_val INFO Metrics on validation
+00:51:58 utils.log_metrics INFO Precision: 0.959956
+00:51:58 utils.log_metrics INFO Recall: 0.959371
+00:51:58 utils.log_metrics INFO F-score: 0.958854
+00:51:58 train_and_val INFO Current epoch num: 92
+00:53:34 train_and_val INFO Loss changed from 0.006103 to 0.006967
+00:53:46 train_and_val INFO Metrics on validation
+00:53:46 utils.log_metrics INFO Precision: 0.958424
+00:53:46 utils.log_metrics INFO Recall: 0.964449
+00:53:46 utils.log_metrics INFO F-score: 0.960668
+00:53:46 train_and_val INFO Current epoch num: 93
+00:55:22 train_and_val INFO Loss changed from 0.006886 to 0.008018
+00:55:34 train_and_val INFO Metrics on validation
+00:55:34 utils.log_metrics INFO Precision: 0.960244
+00:55:34 utils.log_metrics INFO Recall: 0.96063
+00:55:34 utils.log_metrics INFO F-score: 0.959476
+00:55:34 train_and_val INFO Current epoch num: 94
+00:57:11 train_and_val INFO Loss changed from 0.007616 to 0.008725
+00:57:24 train_and_val INFO Metrics on validation
+00:57:24 utils.log_metrics INFO Precision: 0.958196
+00:57:24 utils.log_metrics INFO Recall: 0.96367
+00:57:24 utils.log_metrics INFO F-score: 0.959922
+00:57:24 train_and_val INFO Current epoch num: 95
+00:59:01 train_and_val INFO Loss changed from 0.005743 to 0.007485
+00:59:14 train_and_val INFO Metrics on validation
+00:59:14 utils.log_metrics INFO Precision: 0.961388
+00:59:14 utils.log_metrics INFO Recall: 0.965705
+00:59:14 utils.log_metrics INFO F-score: 0.96246
+00:59:14 train_and_val INFO Current epoch num: 96
+01:00:50 train_and_val INFO Loss changed from 0.006509 to 0.006642
+01:01:02 train_and_val INFO Metrics on validation
+01:01:02 utils.log_metrics INFO Precision: 0.961348
+01:01:02 utils.log_metrics INFO Recall: 0.963213
+01:01:02 utils.log_metrics INFO F-score: 0.961152
+01:01:02 train_and_val INFO Current epoch num: 97
+01:02:38 train_and_val INFO Loss changed from 0.006476 to 0.00817
+01:02:51 train_and_val INFO Metrics on validation
+01:02:51 utils.log_metrics INFO Precision: 0.960724
+01:02:51 utils.log_metrics INFO Recall: 0.963491
+01:02:51 utils.log_metrics INFO F-score: 0.961272
+01:02:51 train_and_val INFO Current epoch num: 98
+01:04:27 train_and_val INFO Loss changed from 0.005965 to 0.007114
+01:04:39 train_and_val INFO Metrics on validation
+01:04:39 utils.log_metrics INFO Precision: 0.954755
+01:04:39 utils.log_metrics INFO Recall: 0.959405
+01:04:39 utils.log_metrics INFO F-score: 0.955867
+01:04:39 train_and_val INFO Current epoch num: 99
+01:06:17 train_and_val INFO Loss changed from 0.005451 to 0.007421
+01:06:30 train_and_val INFO Metrics on validation
+01:06:30 utils.log_metrics INFO Precision: 0.953402
+01:06:30 utils.log_metrics INFO Recall: 0.961777
+01:06:30 utils.log_metrics INFO F-score: 0.956353
+01:06:30 train_and_val INFO Current epoch num: 100
+01:08:06 train_and_val INFO Loss changed from 0.00594 to 0.007239
+01:08:18 train_and_val INFO Metrics on validation
+01:08:18 utils.log_metrics INFO Precision: 0.956484
+01:08:18 utils.log_metrics INFO Recall: 0.963847
+01:08:18 utils.log_metrics INFO F-score: 0.958999
+01:08:18 train_and_val INFO Best model was saved on 42 epoch, path is "../results/models/circles_equal_unet_efficientnet-b4_bcelogits_2mm_15-07-24:23-04/best_on_42_epoch.pt"
+01:08:18 utils.log_metrics INFO Precision: 0.970496
+01:08:18 utils.log_metrics INFO Recall: 0.963352
+01:08:18 utils.log_metrics INFO F-score: 0.965756
+01:08:18 utils.measure_time INFO train_and_val_model: 180.8739817 minutes elapsed
+01:08:18 pipeline.test INFO Testing model started...
+01:08:37 pipeline.test INFO Metrics on test
+01:08:37 utils.log_metrics INFO Precision: 0.973893
+01:08:37 utils.log_metrics INFO Recall: 0.961783
+01:08:37 utils.log_metrics INFO F-score: 0.966805
+01:08:37 utils.measure_time INFO testing: 0.3103819 minutes elapsed
+01:08:37 __main__ INFO Program has finished running...
