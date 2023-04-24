@@ -33,7 +33,7 @@ data = {"Name": [],
 
 allowed_exts = {'jpg', 'jpeg', 'png'}
 
-filename = None
+filenames = []
 
 def check_allowed_file(filename):
 	return '.' in filename and filename.rsplit('.', 1)[1].lower() in allowed_exts
@@ -78,7 +78,7 @@ def predict(img):
 @app.route('/download-zip')
 def download_zip():
     zip_file = zipfile.ZipFile("my_archive.zip", "w")
-    for filename in ['data.csv', 'predict.png']:
+    for filename in ['data.csv', 'predict_' + filenames[0] + '.png']:
         zip_file.write(filename)
     zip_file.close()
     return send_file('my_archive.zip', as_attachment=True)
@@ -97,11 +97,12 @@ def home():
                 return redirect(request.url)
             if file and check_allowed_file(file.filename):
                 filename = str(Path(secure_filename(file.filename)).stem)
+                filenames.append(filename)
                 
                 img = Image.open(file.stream)
                 pred_mask = predict(img)
 
-                cv2.imwrite("predict.png", pred_mask)
+                cv2.imwrite("predict_" + filename + ".png", pred_mask)
 
                 spikelets_num = count_spikelets(pred_mask)
 
