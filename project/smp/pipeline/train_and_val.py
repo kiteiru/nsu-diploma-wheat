@@ -39,7 +39,7 @@ def training(config, loader, model, optimizer, loss_fn, scheduler):
         image = image.to(device=config["DEVICE"])
         mask = mask.float().unsqueeze(1).to(device=config["DEVICE"])
 
-        predictions = torch.sigmoid(model(image))
+        predictions = model(image)
         loss = loss_fn(predictions, mask)
 
         model.zero_grad()
