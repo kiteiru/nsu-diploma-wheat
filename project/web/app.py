@@ -1,9 +1,11 @@
 import os
 import sys
 import cv2
+import time
+import zipfile
 import pandas as pd
 
-from flask import Flask, redirect, jsonify, request, url_for, render_template, flash, abort, send_from_directory
+from flask import Flask, redirect, jsonify, request, url_for, render_template, flash, abort, send_from_directory, make_response, send_file
 import os
 from werkzeug.utils import secure_filename
 from PIL import Image
@@ -31,6 +33,8 @@ data = {"Name": [],
 
 allowed_exts = {'jpg', 'jpeg', 'png'}
 
+filename = None
+
 def check_allowed_file(filename):
 	return '.' in filename and filename.rsplit('.', 1)[1].lower() in allowed_exts
 
@@ -44,7 +48,6 @@ def save_in_buffer(img, pred_img):
     return tuple(encoded_strings)
 
 def count_spikelets(img):
-    img = np.array(img)
     contours, hierarchy = cv2.findContours(img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     return len(contours)
 
@@ -69,9 +72,16 @@ def predict(img):
         pred_mask = (pred_mask > 0.5).float() * 255
         pred_mask = pred_mask[0][0].cpu().data.numpy()
         pred_mask = pred_mask.squeeze().astype(np.uint8)
-    pred_img = Image.fromarray(pred_mask)
 
-    return pred_img
+    return pred_mask
+
+@app.route('/download-zip')
+def download_zip():
+    zip_file = zipfile.ZipFile("my_archive.zip", "w")
+    for filename in ['data.csv', 'predict.png']:
+        zip_file.write(filename)
+    zip_file.close()
+    return send_file('my_archive.zip', as_attachment=True)
 
 
 @app.route("/",methods=['GET', 'POST'])
@@ -89,25 +99,41 @@ def home():
                 filename = str(Path(secure_filename(file.filename)).stem)
                 
                 img = Image.open(file.stream)
-                pred_img = predict(img)
+                pred_mask = predict(img)
 
-                spikelets_num = count_spikelets(pred_img)
+                cv2.imwrite("predict.png", pred_mask)
+
+                spikelets_num = count_spikelets(pred_mask)
 
                 data["Name"].append(filename)
                 data["Spikelets Num"].append(spikelets_num)
 
+                pred_img = Image.fromarray(pred_mask)
                 encoded_img, encoded_pred_img = save_in_buffer(img, pred_img)
 
                 df = pd.DataFrame(data, index=None)
                 print(df)
+
+                df.to_csv('data.csv', index=False)
                 
 
-            return render_template('index.html', img_data=encoded_img, out_data=encoded_pred_img, spikelets_num=spikelets_num, tables=[df.to_html(classes='data')], titles=df.columns.values)
+            return render_template('index.html', 
+                                   img_data=encoded_img, 
+                                   out_data=encoded_pred_img, 
+                                   spikelets_num=spikelets_num, 
+                                   tables=[df.to_html(classes='data')], 
+                                   titles=df.columns.values, 
+                                   show_button=True)
         except FileNotFoundError:
             abort(404)
     else:
-        return render_template('index.html', img_data="", out_data="", spikelets_num="", tables=[], titles="")
+        return render_template('index.html', 
+                               img_data="", 
+                               out_data="", 
+                               spikelets_num="", 
+                               tables="", 
+                               titles="")
     
 
 if __name__ == "__main__":
-    app.run()
+    app.run(port="8000")

@@ -29,11 +29,17 @@
 						{% endif %}
 					</div>
 				</div>
-				
+
 				{% for table in tables %}
 					{{titles[loop.index]}}
 					{{ table|safe }}
 				{% endfor %}
+
+				{% if show_button %}
+					<h1>Download Result</h1>
+					<a href="{{ url_for('download_zip') }}" class="btn btn-primary">Download CSV and PNG as Zip</a>
+				{% endif %}
+		
 			</form>
 		</div>
     </body>
