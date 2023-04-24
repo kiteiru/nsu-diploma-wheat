@@ -6,9 +6,9 @@ project/smp/pipeline/*.sh
 project/smp/pipeline/*.out
 project/smp/experiments
 project/smp/results
-project/smp/models
+project/smp/old_models
 project/smp/logs
 count_metrics.py
 cropped_384.zip
 test
-./test.py
+test.py
