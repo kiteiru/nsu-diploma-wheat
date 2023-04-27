@@ -8,7 +8,14 @@ project/smp/experiments
 project/smp/results
 project/smp/old_models
 project/smp/logs
+project/smp/optuna
 count_metrics.py
 cropped_384.zip
 test
 test.py
+notebooks/**/*.png
+notebooks/**/*.zip
+project/smp/pipeline/*.pkl
+project/smp/pipeline/*.csv
+project/smp/pipeline/infer
+
