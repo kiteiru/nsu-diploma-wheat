@@ -1,0 +1,10 @@
+torch==1.7.0
+albumentations==0.5.1
+tqdm==4.51.0
+scikit-learn==0.21.2
+seaborn==0.11.0
+efficientnet-pytorch==0.6.3
+git+https://github.com/lukemelas/EfficientNet-PyTorch.git@1.0
+git+https://github.com/qubvel/segmentation_models.pytorch@v0.1.3
+git+https://gitlab.com/rostepifanov/netutils.git@348765
+git+https://gitlab.com/rostepifanov/losses_pytorch.git@cf0daa8
