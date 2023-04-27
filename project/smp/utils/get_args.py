@@ -145,16 +145,17 @@ def check_if_optimizer_is_available(config, NAME, ARGV):
     
     # TODO as class not just dictionary
     # TODO figure out why doesnt work with *optim_args
-    optims = {"adam": optim.Adam(config["ARCHITECTURE"].parameters(), config["LEARNING_RATE"]),
-              "adamw": optim.AdamW(config["ARCHITECTURE"].parameters(), config["LEARNING_RATE"]),
-              "adagrad": optim.Adagrad(config["ARCHITECTURE"].parameters(), config["LEARNING_RATE"]),
-              "sgd": optim.SGD(config["ARCHITECTURE"].parameters(), config["LEARNING_RATE"]), 
-              "rmsprop": optim.RMSprop(config["ARCHITECTURE"].parameters(), config["LEARNING_RATE"])
+    optims = {"adam": "Adam",
+              "adamw": "AdamW",
+              "adagrad": "Adagrad",
+              "rmsprop": "RMSprop",
+              "sgd": "SGD",
+              "nadam": "NAdam"
              }
     
     if ARGV in optims:
         config[NAME] = optims[ARGV]
-        logger.info(f'{NAME}: {optims[ARGV].__class__.__name__}')
+        logger.info(f'{NAME}: {optims[ARGV]}')
     else:
         logger.error(f'Optimizer "{ARGV}" does not exist or not available in this program.')
         logger.warning(f'Available optimizers: {list(optims.keys())}')
@@ -208,7 +209,7 @@ def check_args_and_init_config(config, args, timestamp):
 
     check_if_argv_is_positive(config, "EPOCHS", args.epoch)
     check_if_argv_is_positive(config, "BATCH_SIZE", args.batchsize)
-    check_if_argv_is_positive(config, "LEARNING_RATE", args.learningrate)
+    # check_if_argv_is_positive(config, "LEARNING_RATE", args.learningrate)
 
     check_if_argv_is_positive(config, "INPUT_CHANNELS", args.inchannels)
     check_if_argv_is_positive(config, "CLASSES", args.outclasses)
@@ -244,9 +245,9 @@ def parse_input_args():
     parser.add_argument("--coefs", "-coef", type=str, default="../scale_jsons/coefs.json", help='filepath to scale coefficients')
     parser.add_argument("--ratios", "-ratios", type=str, default="../scale_jsons/ratios.json", help='file path to crop resizing ratios')
 
-    parser.add_argument("--epoch", "-e", type=int, default=100, help="training epoch num")
+    parser.add_argument("--epoch", "-e", type=int, default=10, help="training epoch num")
     parser.add_argument("--batchsize", "-bs", type=int, default=8, help="batch size")
-    parser.add_argument("--learningrate", "-lr", type=float, default=1e-3, help="learning rate")
+    # parser.add_argument("--learningrate", "-lr", type=float, default=1e-3, help="learning rate")
 
     parser.add_argument("--inchannels", "-inch", type=int, default=3, help="channel num of input image")
     parser.add_argument("--outclasses", "-cls", type=int, default=1, help="classes num of model output")
@@ -255,8 +256,9 @@ def parse_input_args():
 
     parser.add_argument("--architecture", "-arch", type=str, default="unet", help="architecture name")
     parser.add_argument("--encoder", "-en", type=str, default="efficientnet-b4", help="encoder name")
+
     parser.add_argument("--optimizer", "-opt", type=str, default="adam", help="optimizer name")
-    parser.add_argument("--lossfunc", "-lf", type=str, default="bcelogits", help="loss function name")
+    parser.add_argument("--lossfunc", "-lf", type=str, default="bce", help="loss function name")
 
     parser.add_argument("--radius", "-rad", type=int, default=2, help="normalise distance in mm")
 
