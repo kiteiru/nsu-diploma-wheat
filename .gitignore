@@ -13,9 +13,15 @@ count_metrics.py
 cropped_384.zip
 test
 test.py
+notebooks/real_and_predicted_spikelets_plots/all_csv
+notebooks/real_and_predicted_spikelets_plots/data_organization
+notebooks/make_data_organizations/splits
 notebooks/**/*.png
 notebooks/**/*.zip
 project/smp/pipeline/*.pkl
 project/smp/pipeline/*.csv
+project/smp/pipeline/*.png
 project/smp/pipeline/infer
-
+project/web/*.png
+project/web/*.zip
+project/web/*.csv
