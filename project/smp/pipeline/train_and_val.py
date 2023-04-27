@@ -9,7 +9,7 @@ import pandas as pd
 import albumentations as A  
 import segmentation_models_pytorch as smp
 
-
+from torch import optim
 from pathlib import Path
 from skimage import io
 from skimage.transform import resize
@@ -39,7 +39,7 @@ def training(config, loader, model, optimizer, loss_fn, scheduler):
         image = image.to(device=config["DEVICE"])
         mask = mask.float().unsqueeze(1).to(device=config["DEVICE"])
 
-        predictions = model(image)
+        predictions = torch.sigmoid(model(image))
         loss = loss_fn(predictions, mask)
 
         model.zero_grad()
@@ -112,7 +112,7 @@ def validating(config, loader, model, device="cuda"):
     return mean_precision, mean_recall, mean_fscore
 
 @measure_time
-def train_and_val_model(config):
+def train_and_val_model(config,):
 
     os.makedirs(os.path.join(config["SAVE_MODEL_PATH"], config["EXPERIMENT_NAME"]), exist_ok=True)
     os.makedirs(os.path.join(config["SAVE_OUTPUT_PATH"], config["EXPERIMENT_NAME"]), exist_ok=True)
@@ -129,7 +129,46 @@ def train_and_val_model(config):
 
     model = config["ARCHITECTURE"]
     loss_fn = config["LOSS_FUNCTION"]
-    optimizer = config["OPTIMIZER"]
+    # optimizer = config["OPTIMIZER"]
+    # optimizer = config["OPTIMIZER"](model.parameters(), config["LEARNING_RATE"])
+    optim_name = config["OPTIMIZER"]
+    optimizer = None
+    if optim_name == "Adam":
+        optimizer = optim.Adam(params=model.parameters(),
+                               lr=config["LEARNING_RATE"],
+                               betas=(config["BETA_1"], config["BETA_2"]),
+                               eps=config["EPSILON"])
+                            #    weight_decay=config["WEIGHT_DECAY"])
+    elif optim_name == "AdamW":
+        optimizer = optim.AdamW(params=model.parameters(),
+                                lr=config["LEARNING_RATE"],
+                                betas=(config["BETA_1"], config["BETA_2"]),
+                                eps=config["EPSILON"])
+                                # weight_decay=config["WEIGHT_DECAY"])
+    elif optim_name == "Adagrad":
+        optimizer = optim.Adagrad(params=model.parameters(),
+                                  lr=config["LEARNING_RATE"],
+                                #   lr_decay=config["LEARNING_RATE_DECAY"],
+                                #   weight_decay=config["WEIGHT_DECAY"],
+                                  eps=config["EPSILON"])
+    elif optim_name == "RMSprop":
+        optimizer = optim.RMSprop(params=model.parameters(),
+                                  lr=config["LEARNING_RATE"],
+                                  eps=config["EPSILON"],
+                                #   weight_decay=config["WEIGHT_DECAY"],
+                                  momentum=config["MOMENTUM"])
+    elif optim_name == "SGD":
+        optimizer = optim.SGD(params=model.parameters(),
+                              lr=config["LEARNING_RATE"],
+                              momentum=config["MOMENTUM"])
+                            #   weight_decay=config["WEIGHT_DECAY"])
+    elif optim_name == "NAdam":
+        optimizer = optim.NAdam(params=model.parameters(),
+                                lr=config["LEARNING_RATE"],
+                                betas=(config["BETA_1"], config["BETA_2"]),
+                                eps=config["EPSILON"])
+                                # weight_decay=config["WEIGHT_DECAY"],
+                                # momentum_decay=config["MOMENTUM_DECAY"])
 
     scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer)
 
@@ -172,5 +211,5 @@ def train_and_val_model(config):
 
     df.to_csv(os.path.join(config["SAVE_MODEL_PATH"], config["EXPERIMENT_NAME"], "validation_metrics.csv"), sep=';')
 
-    return config
+    return config, best_metrics[2]
     
