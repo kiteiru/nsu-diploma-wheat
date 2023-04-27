@@ -1,0 +1,3 @@
+CUDA_VISIBLE_DEVICES=0 yolo train imgsz=384 batch=16 epochs=400 optimizer=Adam data=spikelets.yaml model=yolov8n.pt lr0=0.001 save_period=50 name="nano_certain" cache=True pretrained=False mode=train patience=0
+CUDA_VISIBLE_DEVICES=0 yolo val imgsz=384 batch=16 data=spikelets.yaml model=runs/detect/nano_certain/weights/best.pt save_txt=True task=detect verbose=True conf=0.5 name="val_nano_certain"
+CUDA_VISIBLE_DEVICES=0 yolo predict imgsz=384 batch=16 source=../yolo_data/certain/images/test model=runs/detect/nano_certain/weights/best.pt save_txt=True task=detect verbose=True conf=0.5 name="test_nano_certain"
