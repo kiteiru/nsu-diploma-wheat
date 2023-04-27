@@ -35,6 +35,8 @@ def testing(config):
     recalls = list()
     f1s = list()
 
+    mean_fscore = 0
+
     logger.info("Testing model started...")
 
     model = config["ARCHITECTURE"]
@@ -90,3 +92,5 @@ def testing(config):
 
         logger.info("Metrics on test")
         log_metrics(mean_precision, mean_recall, mean_fscore)
+        
+    return mean_fscore
