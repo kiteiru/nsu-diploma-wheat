@@ -1,3 +1,4 @@
+import gc
 import os
 import copy
 import random
@@ -30,6 +31,9 @@ ROUND_LIMIT = 6
 df_precisions = []
 df_recalls = []
 df_f1s = []
+
+def log_optimization_mode(NAME, ARGV):
+    logger.info(f'{NAME}: {ARGV}')
 
 def training(config, loader, model, optimizer, loss_fn, scheduler):
     losses = []
@@ -112,7 +116,7 @@ def validating(config, loader, model, device="cuda"):
     return mean_precision, mean_recall, mean_fscore
 
 @measure_time
-def train_and_val_model(config,):
+def train_and_val_model(model, config):
 
     os.makedirs(os.path.join(config["SAVE_MODEL_PATH"], config["EXPERIMENT_NAME"]), exist_ok=True)
     os.makedirs(os.path.join(config["SAVE_OUTPUT_PATH"], config["EXPERIMENT_NAME"]), exist_ok=True)
@@ -123,46 +127,67 @@ def train_and_val_model(config,):
     train_dataloader = create_dataloaders(config, "train", train_transformations)
     val_dataloader = create_dataloaders(config, "val", val_transformations)
 
-    # model = smp.Unet(encoder_name=config["ENCODER"], in_channels=config["INPUT_CHANNELS"], classes=config["CLASSES"], activation=None).to(config["DEVICE"])
-    # loss_fn   = nn.BCEWithLogitsLoss()
-    # optimizer = optim.Adam(model.parameters(), lr=config["LEARNING_RATE"])
-
-    model = config["ARCHITECTURE"]
+    
+    # model = config["ARCHITECTURE"]
+    model = model.to(config["DEVICE"])
+    
     loss_fn = config["LOSS_FUNCTION"]
     # optimizer = config["OPTIMIZER"]
     # optimizer = config["OPTIMIZER"](model.parameters(), config["LEARNING_RATE"])
     optim_name = config["OPTIMIZER"]
     optimizer = None
-    if optim_name == "Adam":
+    
+    logger.info("")
+    log_optimization_mode("LEARNING_RATE", config["LEARNING_RATE"])
+    if optim_name == "Adagrad":
+        log_optimization_mode("EPSILON", config["EPSILON"])
+
+        optimizer = optim.Adagrad(params=model.parameters(),
+                                  lr=config["LEARNING_RATE"],
+                                #   lr_decay=config["LEARNING_RATE_DECAY"],
+                                #   weight_decay=config["WEIGHT_DECAY"],
+                                  eps=config["EPSILON"])
+    elif optim_name == "Adam":
+        log_optimization_mode("BETA_1", config["BETA_1"])
+        log_optimization_mode("BETA_2", config["BETA_2"])
+        log_optimization_mode("EPSILON", config["EPSILON"])
+
         optimizer = optim.Adam(params=model.parameters(),
                                lr=config["LEARNING_RATE"],
                                betas=(config["BETA_1"], config["BETA_2"]),
                                eps=config["EPSILON"])
                             #    weight_decay=config["WEIGHT_DECAY"])
     elif optim_name == "AdamW":
+        log_optimization_mode("BETA_1", config["BETA_1"])
+        log_optimization_mode("BETA_2", config["BETA_2"])
+        log_optimization_mode("EPSILON", config["EPSILON"])
+
         optimizer = optim.AdamW(params=model.parameters(),
                                 lr=config["LEARNING_RATE"],
                                 betas=(config["BETA_1"], config["BETA_2"]),
                                 eps=config["EPSILON"])
                                 # weight_decay=config["WEIGHT_DECAY"])
-    elif optim_name == "Adagrad":
-        optimizer = optim.Adagrad(params=model.parameters(),
-                                  lr=config["LEARNING_RATE"],
-                                #   lr_decay=config["LEARNING_RATE_DECAY"],
-                                #   weight_decay=config["WEIGHT_DECAY"],
-                                  eps=config["EPSILON"])
     elif optim_name == "RMSprop":
+        log_optimization_mode("EPSILON", config["EPSILON"])
+        log_optimization_mode("MOMENTUM", config["MOMENTUM"])
+
         optimizer = optim.RMSprop(params=model.parameters(),
                                   lr=config["LEARNING_RATE"],
                                   eps=config["EPSILON"],
                                 #   weight_decay=config["WEIGHT_DECAY"],
                                   momentum=config["MOMENTUM"])
     elif optim_name == "SGD":
+        log_optimization_mode("MOMENTUM", config["MOMENTUM"])
+
         optimizer = optim.SGD(params=model.parameters(),
                               lr=config["LEARNING_RATE"],
                               momentum=config["MOMENTUM"])
                             #   weight_decay=config["WEIGHT_DECAY"])
     elif optim_name == "NAdam":
+        log_optimization_mode("BETA_1", config["BETA_1"])
+        log_optimization_mode("BETA_2", config["BETA_2"])
+        log_optimization_mode("EPSILON", config["EPSILON"])
+        
         optimizer = optim.NAdam(params=model.parameters(),
                                 lr=config["LEARNING_RATE"],
                                 betas=(config["BETA_1"], config["BETA_2"]),
@@ -211,5 +236,5 @@ def train_and_val_model(config,):
 
     df.to_csv(os.path.join(config["SAVE_MODEL_PATH"], config["EXPERIMENT_NAME"], "validation_metrics.csv"), sep=';')
 
-    return config, best_metrics[2]
+    return model, config, best_metrics[2]
     
