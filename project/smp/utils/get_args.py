@@ -191,12 +191,18 @@ def check_normalised_distance(config, NAME, ARGV):
         logger.error(f'Usage: {NAME} has to be a positive number.')
         exit_from_program()
 
+def log_optimization_mode(config, NAME, ARGV):
+    config[NAME] = ARGV
+    logger.info(f'{NAME}: {ARGV}')
+
 def generate_name(config, NAME, args, timestamp):
     config[NAME] = args.geometry + "_" + args.dataorg + "_" + args.architecture + "_" + args.encoder + "_" + args.lossfunc + "_" + str(args.radius) + "mm_" + timestamp
 
 
 def check_args_and_init_config(config, args, timestamp):
     # TODO config as class not just dictionary
+
+    log_optimization_mode(config, "OPTIMIZATION_MODE", args.optimizationmode)
 
     check_input_data_dir(config, "INPUT_DATA_PATH", args.inputdata, args.geometry)
 
@@ -209,7 +215,13 @@ def check_args_and_init_config(config, args, timestamp):
 
     check_if_argv_is_positive(config, "EPOCHS", args.epoch)
     check_if_argv_is_positive(config, "BATCH_SIZE", args.batchsize)
-    # check_if_argv_is_positive(config, "LEARNING_RATE", args.learningrate)
+
+    if not config["OPTIMIZATION_MODE"]:
+        check_if_argv_is_positive(config, "LEARNING_RATE", args.learningrate)
+        check_if_argv_is_positive(config, "BETA_1", args.beta1)
+        check_if_argv_is_positive(config, "BETA_2", args.beta2)
+        check_if_argv_is_positive(config, "EPSILON", args.epsilon)
+        check_if_argv_is_positive(config, "MOMENTUM", args.momentum)
 
     check_if_argv_is_positive(config, "INPUT_CHANNELS", args.inchannels)
     check_if_argv_is_positive(config, "CLASSES", args.outclasses)
@@ -233,6 +245,8 @@ def check_args_and_init_config(config, args, timestamp):
 def parse_input_args():
 
     parser = argparse.ArgumentParser()
+
+    parser.add_argument("--optimizationmode", "-optmode", type=bool, default=False, choices=[True, False], help="whether optimization mode using optuna")
     
     parser.add_argument("--inputdata", "-in", type=str, default="../../../cropped_384", help="directory path with cropped data")
     parser.add_argument("--geometry", "-g", type=str, default="circles", choices=["circles", "ellipses"], help="type of markup")
@@ -247,7 +261,12 @@ def parse_input_args():
 
     parser.add_argument("--epoch", "-e", type=int, default=10, help="training epoch num")
     parser.add_argument("--batchsize", "-bs", type=int, default=8, help="batch size")
-    # parser.add_argument("--learningrate", "-lr", type=float, default=1e-3, help="learning rate")
+
+    parser.add_argument("--learningrate", "-lr", type=float, default=1e-3, help="learning rate")
+    parser.add_argument("--beta1", "-b1", type=float, default=0.99, help="optimizator hyperparameter beta1")
+    parser.add_argument("--beta2", "-b2", type=float, default=0.999, help="optimizator hyperparameter beta2")
+    parser.add_argument("--epsilon", "-eps", type=float, default=7e-6, help="optimizator hyperparameter epsilon")
+    parser.add_argument("--momentum", "-mtm", type=float, default=0.4, help="optimizator hyperparameter momentum")
 
     parser.add_argument("--inchannels", "-inch", type=int, default=3, help="channel num of input image")
     parser.add_argument("--outclasses", "-cls", type=int, default=1, help="classes num of model output")
@@ -257,7 +276,7 @@ def parse_input_args():
     parser.add_argument("--architecture", "-arch", type=str, default="unet", help="architecture name")
     parser.add_argument("--encoder", "-en", type=str, default="efficientnet-b4", help="encoder name")
 
-    parser.add_argument("--optimizer", "-opt", type=str, default="adam", help="optimizer name")
+    parser.add_argument("--optimizer", "-opt", type=str, default="adagrad", help="optimizer name")
     parser.add_argument("--lossfunc", "-lf", type=str, default="bce", help="loss function name")
 
     parser.add_argument("--radius", "-rad", type=int, default=2, help="normalise distance in mm")
