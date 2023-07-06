@@ -1,4 +1,4 @@
-# Wheat spikelets automatic detection method
+# Wheat Spikelets Automatic Detection Method
 
 ## General
 
@@ -18,7 +18,7 @@ There was released [final model](https://github.com/kiteiru/nsu-diploma-wheat/re
 
 Also as part of the work was developed MVP of web interface that let user load picture of spikelet and run prediction mode of the model get binary mask with localized spikelets and also csv table with image name and number of found spikelets on picture.
 
-## Steps for running inference
+## Steps for Running Inference
 
 1. Install packages from [*requirements.txt*]() file:
 
@@ -34,7 +34,7 @@ Also as part of the work was developed MVP of web interface that let user load p
     python inference.py -in [input dirname] -model [model pathname] -out [out dirname] -csv [filename]
     ```
 
-## Main used technologies, libraries and frameworks
+## Main Used Technologies, Libraries and Frameworks
 - PyTorch
 - Segmentation Models PyTorch
 - Optuna
