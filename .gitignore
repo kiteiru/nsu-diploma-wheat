@@ -16,8 +16,12 @@ test.py
 notebooks/real_and_predicted_spikelets_plots/all_csv
 notebooks/real_and_predicted_spikelets_plots/data_organization
 notebooks/make_data_organizations/splits
+notebooks/draw_metric_plots/
 notebooks/**/*.png
 notebooks/**/*.zip
+project/smp/old/
+project/smp/pipeline/outs/
+project/smp/pipeline/optuna_df.py
 project/smp/pipeline/*.pkl
 project/smp/pipeline/*.csv
 project/smp/pipeline/*.png
