@@ -30,3 +30,6 @@ project/smp/pipeline/infer
 project/web/*.png
 project/web/*.zip
 project/web/*.csv
+project/smp/pipeline/inference/build
+project/smp/pipeline/inference/dist
+project/smp/pipeline/inference/inference.spec
