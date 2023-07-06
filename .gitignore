@@ -10,6 +10,7 @@ project/smp/old_models
 project/smp/logs
 project/smp/optuna
 count_metrics.py
+count_spikelets.py
 cropped_384.zip
 test
 test.py
