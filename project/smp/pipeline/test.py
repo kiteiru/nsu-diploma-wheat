@@ -25,7 +25,7 @@ warnings.filterwarnings("ignore")
 ROUND_LIMIT = 6
 
 @measure_time
-def testing(config):
+def testing(model, config):
 
     test_transformations = get_transformations(config, "test")
 
@@ -39,8 +39,8 @@ def testing(config):
 
     logger.info("Testing model started...")
 
-    model = config["ARCHITECTURE"]
-    model.load_state_dict(torch.load(config["MODEL_NAME"]))
+    # model = config["ARCHITECTURE"]
+    # model.load_state_dict(torch.load(config["MODEL_NAME"]))
     model.eval()
     with torch.no_grad():
         for i, (img, mask) in enumerate(test_dataloader):
@@ -67,7 +67,7 @@ def testing(config):
 
                 name = str(Path(config["DATA_ORG"]["test"][i]).stem)
 
-                distance = config["RADIUS"] * np.sqrt(config["COEFS"][name]) / config["RATIOS"][name]
+                distance = config["RADIUS"] * np.sqrt(config["COEFS"][name]) / (config["RATIOS"][name] * 384 / config["CROP_SIZE"])
 
                 confusions = detection_score(name, true_mask, pred_mask, distance)
                 # print(confusions)

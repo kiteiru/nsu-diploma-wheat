@@ -7,12 +7,14 @@ import logging
 import warnings
 import numpy as np
 import pandas as pd
+import torch.nn as nn
 import albumentations as A  
 import segmentation_models_pytorch as smp
 
 from torch import optim
 from pathlib import Path
 from skimage import io
+from numpy import inf
 from skimage.transform import resize
 
 from utils.log_metrics import log_metrics
@@ -20,6 +22,8 @@ from utils.measure_time import measure_time
 from utils.normalise_distance import detection_score
 from preprocessing.create_dataloaders import create_dataloaders
 from preprocessing.augmentation_transformations import get_transformations
+# from torchsummary import summary
+from pytorch_model_summary import summary
 
 logger = logging.getLogger(__name__)
 logging.getLogger('PIL').setLevel(logging.WARNING)
@@ -31,12 +35,10 @@ ROUND_LIMIT = 6
 df_precisions = []
 df_recalls = []
 df_f1s = []
-
-def log_optimization_mode(NAME, ARGV):
-    logger.info(f'{NAME}: {ARGV}')
+df_losses = []
 
 def training(config, loader, model, optimizer, loss_fn, scheduler):
-    losses = []
+    sum_loss = 0
 
     model.train()
     for batch_idx, (image, mask) in enumerate(loader):
@@ -51,9 +53,9 @@ def training(config, loader, model, optimizer, loss_fn, scheduler):
         optimizer.step()
 
         # scheduler.step(loss.item())
-        losses.append(round(loss.item(), ROUND_LIMIT))
+        sum_loss += loss.item()
 
-    logger.info(f"Loss changed from {losses[0]} to {losses[-1]}")
+    return round(sum_loss / len(loader), ROUND_LIMIT)
 
 def validating(config, loader, model, device="cuda"):
     precisions = []
@@ -84,7 +86,7 @@ def validating(config, loader, model, device="cuda"):
 
                 name = str(Path(config["DATA_ORG"]["val"][i]).stem)
 
-                distance = config["RADIUS"] * np.sqrt(config["COEFS"][name]) / config["RATIOS"][name]
+                distance = config["RADIUS"] * np.sqrt(config["COEFS"][name]) / (config["RATIOS"][name] * 384 / config["CROP_SIZE"])
 
                 confusions = detection_score(name, true_mask, pred_mask, distance)
                 # print(confusions)
@@ -116,7 +118,7 @@ def validating(config, loader, model, device="cuda"):
     return mean_precision, mean_recall, mean_fscore
 
 @measure_time
-def train_and_val_model(model, config):
+def train_and_val_model(model, optimizer, loss_fn, config):
 
     os.makedirs(os.path.join(config["SAVE_MODEL_PATH"], config["EXPERIMENT_NAME"]), exist_ok=True)
     os.makedirs(os.path.join(config["SAVE_OUTPUT_PATH"], config["EXPERIMENT_NAME"]), exist_ok=True)
@@ -129,73 +131,9 @@ def train_and_val_model(model, config):
 
     
     # model = config["ARCHITECTURE"]
-    model = model.to(config["DEVICE"])
-    
-    loss_fn = config["LOSS_FUNCTION"]
-    # optimizer = config["OPTIMIZER"]
-    # optimizer = config["OPTIMIZER"](model.parameters(), config["LEARNING_RATE"])
-    optim_name = config["OPTIMIZER"]
-    optimizer = None
-    
-    logger.info("")
-    log_optimization_mode("LEARNING_RATE", config["LEARNING_RATE"])
-    if optim_name == "Adagrad":
-        log_optimization_mode("EPSILON", config["EPSILON"])
+    # model = model.to(config["DEVICE"])
 
-        optimizer = optim.Adagrad(params=model.parameters(),
-                                  lr=config["LEARNING_RATE"],
-                                #   lr_decay=config["LEARNING_RATE_DECAY"],
-                                #   weight_decay=config["WEIGHT_DECAY"],
-                                  eps=config["EPSILON"])
-    elif optim_name == "Adam":
-        log_optimization_mode("BETA_1", config["BETA_1"])
-        log_optimization_mode("BETA_2", config["BETA_2"])
-        log_optimization_mode("EPSILON", config["EPSILON"])
-
-        optimizer = optim.Adam(params=model.parameters(),
-                               lr=config["LEARNING_RATE"],
-                               betas=(config["BETA_1"], config["BETA_2"]),
-                               eps=config["EPSILON"])
-                            #    weight_decay=config["WEIGHT_DECAY"])
-    elif optim_name == "AdamW":
-        log_optimization_mode("BETA_1", config["BETA_1"])
-        log_optimization_mode("BETA_2", config["BETA_2"])
-        log_optimization_mode("EPSILON", config["EPSILON"])
-
-        optimizer = optim.AdamW(params=model.parameters(),
-                                lr=config["LEARNING_RATE"],
-                                betas=(config["BETA_1"], config["BETA_2"]),
-                                eps=config["EPSILON"])
-                                # weight_decay=config["WEIGHT_DECAY"])
-    elif optim_name == "RMSprop":
-        log_optimization_mode("EPSILON", config["EPSILON"])
-        log_optimization_mode("MOMENTUM", config["MOMENTUM"])
-
-        optimizer = optim.RMSprop(params=model.parameters(),
-                                  lr=config["LEARNING_RATE"],
-                                  eps=config["EPSILON"],
-                                #   weight_decay=config["WEIGHT_DECAY"],
-                                  momentum=config["MOMENTUM"])
-    elif optim_name == "SGD":
-        log_optimization_mode("MOMENTUM", config["MOMENTUM"])
-
-        optimizer = optim.SGD(params=model.parameters(),
-                              lr=config["LEARNING_RATE"],
-                              momentum=config["MOMENTUM"])
-                            #   weight_decay=config["WEIGHT_DECAY"])
-    elif optim_name == "NAdam":
-        log_optimization_mode("BETA_1", config["BETA_1"])
-        log_optimization_mode("BETA_2", config["BETA_2"])
-        log_optimization_mode("EPSILON", config["EPSILON"])
-        
-        optimizer = optim.NAdam(params=model.parameters(),
-                                lr=config["LEARNING_RATE"],
-                                betas=(config["BETA_1"], config["BETA_2"]),
-                                eps=config["EPSILON"])
-                                # weight_decay=config["WEIGHT_DECAY"],
-                                # momentum_decay=config["MOMENTUM_DECAY"])
-
-    scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer)
+    # scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer)
 
     best_model = None
     best_epoch = 0
@@ -204,10 +142,19 @@ def train_and_val_model(model, config):
 
     logger.info("Training model started...")
     model_path = ""
+
+    logger.info(summary(model, torch.zeros((8, 3, 384, 384)).to(device=config["DEVICE"]), show_hierarchical=True, show_input=True))
+
+    # logger.info(summary(model, (3, 384, 384)))
+
+    before_loss = inf
     for epoch in range(config["EPOCHS"]):
         logger.info(f"Current epoch num: {str(epoch + 1)}")
 
-        training(config, train_dataloader, model, optimizer, loss_fn, scheduler)
+        after_loss = training(config, train_dataloader, model, optimizer, loss_fn, None)
+        logger.info(f'Loss changed from {before_loss} to {after_loss}')
+        before_loss = after_loss
+        df_losses.append(after_loss)
         
         current_metrics = validating(config, val_dataloader, model, device=config["DEVICE"])
 
@@ -230,11 +177,12 @@ def train_and_val_model(model, config):
 
     data = {'Precision': df_precisions, 
             'Recall': df_recalls,
-            'Fscore': df_f1s}
+            'Fscore': df_f1s,
+            'Loss': df_losses}
 
     df = pd.DataFrame(data)
 
     df.to_csv(os.path.join(config["SAVE_MODEL_PATH"], config["EXPERIMENT_NAME"], "validation_metrics.csv"), sep=';')
 
-    return model, config, best_metrics[2]
+    return model, optimizer, loss_fn, config, best_metrics[2]
     
