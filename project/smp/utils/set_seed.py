@@ -3,8 +3,7 @@ import torch
 import random
 import numpy as np
 
-def set_seed():
-    seed = 197
+def set_seed(seed):
 
     torch.manual_seed(seed)
     torch.cuda.manual_seed(seed)
@@ -16,5 +15,3 @@ def set_seed():
     torch.backends.cudnn.benchmark = False
     torch.backends.cudnn.deterministic = True
     torch.backends.cudnn.enabled = False
-
-    os.environ["PYTHONHASHSEED"] = str(seed)

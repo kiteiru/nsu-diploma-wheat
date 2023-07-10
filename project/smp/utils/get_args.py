@@ -36,6 +36,7 @@ def check_crop_size(config, NAME, ARGV):
             logger.warning(f'Crop size {ARGV} is not divided by 32. It was changed to nearest divided: {config[NAME]}')
         else:
             config[NAME] = ARGV
+            logger.info(f'{NAME} = {ARGV}')
     else:
         logger.error(f'Usage: {NAME} has to be a positive number.')
         exit_from_program()
@@ -84,12 +85,12 @@ def set_device(config, NAME, ARGV):
     logger.info(f'{NAME}: {ARGV}')
 
 def check_if_encoder_is_available(config, NAME, ARGV):
-    # TODO as class not just list
     encoders = ['timm-efficientnet-b0', 'timm-efficientnet-b1', 'timm-efficientnet-b2', 'timm-efficientnet-b3', 'timm-efficientnet-b4', 'timm-efficientnet-b5',
                 'efficientnet-b0', 'efficientnet-b1', 'efficientnet-b2', 'efficientnet-b3', 'efficientnet-b4', 'efficientnet-b5',
                 'resnet18', 'resnet34', 'resnet50', 'resnet101', 'resnet152',
                 'densenet121', 'densenet169', 'densenet201', 'densenet161',
                 'vgg11', 'vgg13', 'vgg16', 'vgg19',
+                'dpn68', 'dpn92', 'dpn98',
                 'mobilenet_v2']
     
     if ARGV in encoders:
@@ -101,40 +102,18 @@ def check_if_encoder_is_available(config, NAME, ARGV):
         exit_from_program()
 
 def check_if_architecture_is_available(config, NAME, ARGV):
-    # TODO as class not just dictionary
-    archs = {"unet": smp.Unet(encoder_name=config["ENCODER"],
-                              in_channels=config["INPUT_CHANNELS"],
-                              classes=config["CLASSES"],
-                              activation=None),
-            #  "unetpp": smp.UnetPlusPlus(encoder_name=config["ENCODER"],
-            #                             in_channels=config["INPUT_CHANNELS"],
-            #                             classes=config["CLASSES"],
-            #                             activation=None),
-            #  "linknet": smp.Linknet(encoder_name=config["ENCODER"],
-            #                         in_channels=config["INPUT_CHANNELS"],
-            #                         classes=config["CLASSES"],
-            #                         activation=None),
-            #  "fpn": smp.FPN(encoder_name=config["ENCODER"],
-            #                 in_channels=config["INPUT_CHANNELS"],
-            #                 classes=config["CLASSES"],
-            #                 activation=None),
-            #  "deeplabv3": smp.DeepLabV3(encoder_name=config["ENCODER"],
-            #                             in_channels=config["INPUT_CHANNELS"],
-            #                             classes=config["CLASSES"],
-            #                             activation=None),
-            #  "pspnet": smp.PSPNet(encoder_name=config["ENCODER"],
-            #                       in_channels=config["INPUT_CHANNELS"],
-            #                       classes=config["CLASSES"],
-            #                       activation=None),
-            #  "pan": smp.PAN(encoder_name=config["ENCODER"],
-            #                 in_channels=config["INPUT_CHANNELS"],
-            #                 classes=config["CLASSES"],
-            #                 activation=None)
+    archs = {"unet": "Unet",
+             "unetpp": "UnetPlusPlus",
+             "linknet": "LinkNet",
+             "fpn": "FPN",
+             "deeplabv3": "DeepLabV3",
+             "pspnet": "PSPNet",
+             "pan": "PAN"
             }
     
     if ARGV in archs:
-        config[NAME] = archs[ARGV].to(config["DEVICE"])
-        logger.info(f'{NAME}: {archs[ARGV].__class__.__name__}')
+        config[NAME] = archs[ARGV]
+        logger.info(f'{NAME}: {archs[ARGV]}')
     else:
         logger.error(f'Architecture "{ARGV}" does not exist or not available in this program.')
         logger.warning(f'Available architectures: {list(archs.keys())}')
@@ -143,8 +122,6 @@ def check_if_architecture_is_available(config, NAME, ARGV):
 def check_if_optimizer_is_available(config, NAME, ARGV):
     # optim_args = [config["ARCHITECTURE"].parameters(), config["LEARNING_RATE"]]
     
-    # TODO as class not just dictionary
-    # TODO figure out why doesnt work with *optim_args
     optims = {"adam": "Adam",
               "adamw": "AdamW",
               "adagrad": "Adagrad",
@@ -162,11 +139,9 @@ def check_if_optimizer_is_available(config, NAME, ARGV):
         exit_from_program()
 
 def check_if_loss_function_is_available(config, NAME, ARGV):
-    # TODO as class not just dictionary
     loss_funcs = {"mse": nn.MSELoss(),
                   "bce": nn.BCELoss(),
                   "bcelogits": nn.BCEWithLogitsLoss(),
-                  "softbcelogits": smp.losses.SoftBCEWithLogitsLoss(),
                   "jaccard": smp.losses.JaccardLoss(mode="binary"),
                   "dice": smp.losses.DiceLoss(mode="binary"),
                   "focal": smp.losses.FocalLoss(mode="binary")
@@ -195,12 +170,20 @@ def log_optimization_mode(config, NAME, ARGV):
     config[NAME] = ARGV
     logger.info(f'{NAME}: {ARGV}')
 
+def check_probability(config, NAME, ARGV):
+    check_if_argv_is_positive(config, NAME, ARGV)
+    if ARGV <= 1:
+        config[NAME] = ARGV
+        logger.info(f'{NAME} = {ARGV}')
+    else:
+        logger.error(f'Usage: {NAME} has not to be greater than 1.')
+        exit_from_program()
+
 def generate_name(config, NAME, args, timestamp):
     config[NAME] = args.geometry + "_" + args.dataorg + "_" + args.architecture + "_" + args.encoder + "_" + args.lossfunc + "_" + str(args.radius) + "mm_" + timestamp
 
 
 def check_args_and_init_config(config, args, timestamp):
-    # TODO config as class not just dictionary
 
     log_optimization_mode(config, "OPTIMIZATION_MODE", args.optimizationmode)
 
@@ -216,12 +199,23 @@ def check_args_and_init_config(config, args, timestamp):
     check_if_argv_is_positive(config, "EPOCHS", args.epoch)
     check_if_argv_is_positive(config, "BATCH_SIZE", args.batchsize)
 
+    check_if_argv_is_positive(config, "LEARNING_RATE", args.learningrate)
+    check_if_argv_is_positive(config, "BETA_1", args.beta1)
+    check_if_argv_is_positive(config, "BETA_2", args.beta2)
+    check_if_argv_is_positive(config, "EPSILON", args.epsilon)
+    check_if_argv_is_positive(config, "MOMENTUM", args.momentum)
+
     if not config["OPTIMIZATION_MODE"]:
-        check_if_argv_is_positive(config, "LEARNING_RATE", args.learningrate)
-        check_if_argv_is_positive(config, "BETA_1", args.beta1)
-        check_if_argv_is_positive(config, "BETA_2", args.beta2)
-        check_if_argv_is_positive(config, "EPSILON", args.epsilon)
-        check_if_argv_is_positive(config, "MOMENTUM", args.momentum)
+        # check_if_argv_is_positive(config, "LEARNING_RATE", args.learningrate)
+        # check_if_argv_is_positive(config, "BETA_1", args.beta1)
+        # check_if_argv_is_positive(config, "BETA_2", args.beta2)
+        # check_if_argv_is_positive(config, "EPSILON", args.epsilon)
+        # check_if_argv_is_positive(config, "MOMENTUM", args.momentum)
+
+        check_probability(config, "HORIZONTAL_FLIP_PROBABILITY", args.hflipprob)
+        check_probability(config, "VERTICAL_FLIP_PROBABILITY", args.vflipprob)
+        check_probability(config, "ROTATE_PROBABILITY", args.rotateprob)
+        check_probability(config, "COLOR_JITTER_PROBABILITY", args.clrjitterprob)
 
     check_if_argv_is_positive(config, "INPUT_CHANNELS", args.inchannels)
     check_if_argv_is_positive(config, "CLASSES", args.outclasses)
@@ -262,11 +256,16 @@ def parse_input_args():
     parser.add_argument("--epoch", "-e", type=int, default=10, help="training epoch num")
     parser.add_argument("--batchsize", "-bs", type=int, default=8, help="batch size")
 
-    parser.add_argument("--learningrate", "-lr", type=float, default=1e-3, help="learning rate")
-    parser.add_argument("--beta1", "-b1", type=float, default=0.99, help="optimizator hyperparameter beta1")
-    parser.add_argument("--beta2", "-b2", type=float, default=0.999, help="optimizator hyperparameter beta2")
-    parser.add_argument("--epsilon", "-eps", type=float, default=7e-6, help="optimizator hyperparameter epsilon")
-    parser.add_argument("--momentum", "-mtm", type=float, default=0.4, help="optimizator hyperparameter momentum")
+    parser.add_argument("--learningrate", "-lr", type=float, default=0.0008567807783189615, help="learning rate")
+    parser.add_argument("--beta1", "-b1", type=float, default=0.8574351490828335, help="optimizator hyperparameter beta1")
+    parser.add_argument("--beta2", "-b2", type=float, default=0.9535541415318822, help="optimizator hyperparameter beta2")
+    parser.add_argument("--epsilon", "-eps", type=float, default=8.142133082664047e-06, help="optimizator hyperparameter epsilon")
+    parser.add_argument("--momentum", "-mtm", type=float, default=0.4791430772082106, help="optimizator hyperparameter momentum")
+
+    parser.add_argument("--hflipprob", "-hfp", type=float, default=0.7355216045652765, help="augmentaion horizontal flip probability")
+    parser.add_argument("--vflipprob", "-vfp", type=float, default=0.2770027747117323, help="augmentaion vertical flip probability")
+    parser.add_argument("--rotateprob", "-rp", type=float, default=0.7347604621834732, help="augmentaion rotate probability")
+    parser.add_argument("--clrjitterprob", "-cjp", type=float, default=0.7031338400141268, help="augmentaion color jitter probability")
 
     parser.add_argument("--inchannels", "-inch", type=int, default=3, help="channel num of input image")
     parser.add_argument("--outclasses", "-cls", type=int, default=1, help="classes num of model output")
@@ -276,7 +275,7 @@ def parse_input_args():
     parser.add_argument("--architecture", "-arch", type=str, default="unet", help="architecture name")
     parser.add_argument("--encoder", "-en", type=str, default="efficientnet-b4", help="encoder name")
 
-    parser.add_argument("--optimizer", "-opt", type=str, default="adagrad", help="optimizer name")
+    parser.add_argument("--optimizer", "-opt", type=str, default="rmsprop", help="optimizer name")
     parser.add_argument("--lossfunc", "-lf", type=str, default="bce", help="loss function name")
 
     parser.add_argument("--radius", "-rad", type=int, default=2, help="normalise distance in mm")
