@@ -25,6 +25,24 @@ def count_spikelets(img):
     return len(contours)
 
 
+def get_central_points(mask):
+    contours, _ = cv2.findContours( mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE )
+    central_points = list()
+
+    for contour in contours:
+        try:
+            moments = cv2.moments(contour)
+
+            cx = int(moments['m10']/moments['m00'])
+            cy = int(moments['m01']/moments['m00'])
+
+            central_points.append([cx, cy])
+        except:
+            pass
+
+    return central_points
+
+
 def inference(input, model, output, csv_name, device):
     print("Inference model started...")
     model.eval()
@@ -48,6 +66,17 @@ def inference(input, model, output, csv_name, device):
         # pred_img = Image.fromarray(pred_mask)
         io.imsave(os.path.join(output, "infer_" + name + ".jpg"), pred_mask)
         spikelets_num = count_spikelets(pred_mask)
+        points = get_central_points(pred_mask)
+        coordinates_directory = str(output) + "/coordinates"
+        os.makedirs(coordinates_directory, exist_ok=True)
+
+        with open(Path(coordinates_directory + "/" + str(img_path.stem) + ".txt"), "w") as f:
+            f.write("x;y;")
+            f.write('\n')
+            for point in points:
+                f.write(f'{point[0]};{point[1]};')
+                f.write('\n')
+
 
         data["Name"].append(name)
         data["Spikelets Num"].append(spikelets_num)
@@ -62,7 +91,7 @@ def inference(input, model, output, csv_name, device):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--inputdata", "-in", type=str, default="inference_input", help="directory path with input data for inference")
-    parser.add_argument("--modelpath", "-model", type=str, default="../results/models/circles_equal_unet_efficientnet-b4_bce_2mm_03-40-55:08-05/best_on_257_epoch.pt", help="model path")
+    parser.add_argument("--modelpath", "-model", type=str, default="../../results/models/circles_equal_unet_efficientnet-b4_bce_2mm_03-40-55:08-05/best_on_257_epoch.pt", help="model path")
     parser.add_argument("--outputdata", "-out", type=str, default="inference_output", help="directory path with further output after inference")
     parser.add_argument("--csvfile", "-csv", type=str, default="inference", help="csv filename")
     args = parser.parse_args()
