@@ -15,6 +15,8 @@ from skimage import io
 from albumentations.pytorch import ToTensorV2
 # from monai.inferers import sliding_window_inference
 
+os.environ["CUDA_VISIBLE_DEVICES"] = 0
+
 warnings.filterwarnings("ignore")
 
 data = {"Name": [],
@@ -43,7 +45,7 @@ def get_central_points(mask):
     return central_points
 
 
-def inference(input, model, output, csv_name, device):
+def inference(input, model, output, device):
     print("Inference model started...")
     model.eval()
     infer_transformations = A.Compose([A.Resize(384, 384), ToTensorV2()])
@@ -82,7 +84,7 @@ def inference(input, model, output, csv_name, device):
         data["Spikelets Num"].append(spikelets_num)
 
     df = pd.DataFrame(data, index=None)
-    df.to_csv(csv_name + '.csv', index=False)
+    df.to_csv("inference.csv", index=False)
 
     end = time.time()
     print(f"{round((end - start), 7)} seconds elapsed")
@@ -93,13 +95,11 @@ if __name__ == "__main__":
     parser.add_argument("--inputdata", "-in", type=str, default="inference_input", help="directory path with input data for inference")
     parser.add_argument("--modelpath", "-model", type=str, default="../../results/models/circles_equal_unet_efficientnet-b4_bce_2mm_03-40-55:08-05/best_on_257_epoch.pt", help="model path")
     parser.add_argument("--outputdata", "-out", type=str, default="inference_output", help="directory path with further output after inference")
-    parser.add_argument("--csvfile", "-csv", type=str, default="inference", help="csv filename")
     args = parser.parse_args()
 
     IN_DIR = args.inputdata
     MODEL_PATH = args.modelpath
     OUT_DIR = args.outputdata
-    CSV_NAME = args.csvfile
     DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
     
     model = smp.Unet(encoder_name='efficientnet-b4',
@@ -109,4 +109,4 @@ if __name__ == "__main__":
     model.load_state_dict(torch.load(MODEL_PATH))
     
     
-    inference(IN_DIR, model, OUT_DIR, CSV_NAME, DEVICE)
+    inference(IN_DIR, model, OUT_DIR, DEVICE)
