@@ -18,22 +18,6 @@ There was released [final model](https://github.com/kiteiru/nsu-diploma-wheat/re
 
 Also as part of the work was developed MVP of web interface that let user load picture of spikelet and run prediction mode of the model get binary mask with localized spikelets and also csv table with image name and number of found spikelets on picture.
 
-## Steps for Running Inference
-
-1. Install packages from [*requirements.txt*]() file:
-
-    ```
-    pip install -r requirements.txt 
-    ```
-
-2. Make cofficient file [like that](https://github.com/kiteiru/nsu-diploma-wheat/blob/main/notebooks/approximate_colorchecker/coefs.json) by segmentation of colorchecker on every image and [counting its area](https://github.com/kiteiru/nsu-diploma-wheat/blob/main/notebooks/approximate_colorchecker/approx.ipynb)
-3. Prepare your images by cropping and resizing it to 384 x 384 px using [this notebook](https://github.com/kiteiru/nsu-diploma-wheat/blob/main/notebooks/images_cropping/cropping.ipynb)
-4. Run script with specified or default arguments:
-
-    ```
-    python inference.py -in [input dirname] -model [model pathname] -out [out dirname] -csv [filename]
-    ```
-
 ## Main Used Technologies, Libraries and Frameworks
 - PyTorch
 - Segmentation Models PyTorch
