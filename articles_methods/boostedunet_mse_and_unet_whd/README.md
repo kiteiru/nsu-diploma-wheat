@@ -26,7 +26,7 @@ Input parameters that need notes:
 * backbone - encoder name from segmentation_models_pytorch library
 * modelname - under what name model will be saved
 * debugname - under what name json with metrics on each epoch will be saved
-* ntree - time of architecture boosting
+* ntree - what number architecture will be boosted
 
 ## Testing
 

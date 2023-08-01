@@ -12,7 +12,7 @@
 
 
 2. Make coefficient file according to [that example](https://github.com/kiteiru/nsu-diploma-wheat/blob/main/notebooks/approximate_colorchecker/coefs.json) by [segmentation of colorchecker](https://github.com/kiteiru/nsu-diploma-wheat/tree/main/notebooks/colorchecker_segmentation) on every image and [counting its area](https://github.com/kiteiru/nsu-diploma-wheat/blob/main/notebooks/approximate_colorchecker/approx.ipynb)
-3. Prepare your images by cropping and resizing it to 384 x 384 px via [this notebook](https://github.com/kiteiru/nsu-diploma-wheat/blob/main/notebooks/images_cropping/cropping.ipynb)
+3. Prepare your images and masks by cropping and resizing it to 384 x 384 px via [this notebook](https://github.com/kiteiru/nsu-diploma-wheat/blob/main/notebooks/images_cropping/cropping.ipynb)
 4. Create folder for input images nearby *inference.py* script and move prepared images to this folder, let it call **inference_input**
 5. Create folder for output images nearby *inference.py* script, let it call **inference_output**
 6. Put [final binary model](https://github.com/kiteiru/nsu-diploma-wheat/releases/tag/v1.0.0) nearby *inference.py* script, let it call **circles.pt**
