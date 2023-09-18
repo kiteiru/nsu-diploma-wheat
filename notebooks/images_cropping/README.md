@@ -11,4 +11,4 @@ for path in Path(CIRCLE_PATH).glob('*_spmk_1.0.png'):
 
 Example of different scale of spike on cropped images and model prediction of its spikelets:
 
-![alt text](Scale.png)
+![Scale](Scale.png)
