@@ -31,7 +31,6 @@ Before using running scripts install ultralytics package:
 ```
 pip install ultralytics
 ```
-Then i used [script](https://github.com/kiteiru/nsu-diploma-wheat/blob/main/articles_methods/yolo/run.sh) for training, testing model and use then for predicting
 
 Parameters that probably need explanatory note:
 
@@ -43,3 +42,15 @@ Parameters that probably need explanatory note:
 * conf - confidence threshold for prediction of objects
 * source - path to data you want to use for inference
 * save_txt - saving bbox predicted markup and labels in txt format
+
+### Training
+For training model use as example further script:
+```
+CUDA_VISIBLE_DEVICES=0 yolo train imgsz=384 batch=16 epochs=400 optimizer=Adam data=[there should be path to your YAML confug file described above] model=yolov8n.pt lr0=0.001 save_period=50 name=[name of dir for saving trained model] cache=True pretrained=False mode=train patience=0
+```
+
+### Inference
+```
+CUDA_VISIBLE_DEVICES=0 yolo predict imgsz=384 batch=16 source=[path to dir with images you want to have prediction to] model=[path to .pt trained model] save_txt=True task=detect verbose=True conf=0.5 name=[name of dir for saving results]
+```
+You can find trained models on crops with size of 384 px [there](https://github.com/kiteiru/nsu-diploma-wheat/releases/tag/v2.0.0) 
