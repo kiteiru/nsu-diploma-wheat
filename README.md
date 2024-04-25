@@ -29,4 +29,4 @@ Also as part of the work was developed MVP of web interface that let user load p
 
 ## Source
 
-You can get acquainted with full textwork, description of method development process and achieved results in details [here](https://drive.google.com/file/d/1ov_lkkyoP-X2i4P7mZV5h6Qq2OKCUpeq/view?usp=sharing).
+You can get acquainted with full textwork, description of method development process and achieved results in details [here](https://drive.google.com/file/d/1eBcZf738bVvZJXDHQizaTc3v85o96Z-s/view).
